@@ -6,6 +6,8 @@ import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
 import 'package:http/http.dart' as http;
 
+import 'movie_view.dart';
+
 class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);
 
@@ -46,9 +48,20 @@ class _MovieListViewState extends State<MovieListView> {
                   key: centerKey,
                   delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        child: MovieItemListComponent(movie:snapshot.data![index]),
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MovieView(movie: snapshot.data![index]),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: MovieItemListComponent(movie:snapshot.data![index]),
+
+                        ),
                       );
                     },
                     childCount: snapshot.data!.length,
