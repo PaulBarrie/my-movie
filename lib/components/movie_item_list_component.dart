@@ -53,7 +53,7 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
              mainAxisAlignment: MainAxisAlignment.center,
 
              children: <Widget>[
-                GradeStar(value: movie.averageGrade.round()),
+                GradeStar(value: (movie.averageGrade / 2).round()),
                const SizedBox(width: 50),
                 Text(voteSentence),
                ],

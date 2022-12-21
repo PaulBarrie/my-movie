@@ -4,7 +4,6 @@ import 'package:my_movie/components/movie_item_list_component.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
-import 'package:http/http.dart' as http;
 
 import 'movie_view.dart';
 
@@ -60,7 +59,6 @@ class _MovieListViewState extends State<MovieListView> {
                         child: Container(
                           alignment: Alignment.center,
                           child: MovieItemListComponent(movie:snapshot.data![index]),
-
                         ),
                       );
                     },

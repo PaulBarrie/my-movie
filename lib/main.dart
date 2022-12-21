@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/view/favorites_view.dart';
 import 'package:my_movie/view/movie_list_view.dart';

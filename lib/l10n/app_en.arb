@@ -1,5 +1,8 @@
 {
   "appName": "MyMovie",
   "search": "Search",
-  "votes": "votes"
+  "votes": "votes",
+  "movie": "Movie",
+  "tvShow": "TV show",
+  "series": "Series"
 }

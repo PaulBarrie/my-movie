@@ -32,7 +32,6 @@ class APIWebService extends WebService {
   Future<List<Movie>> news({bool weekly = true}) async {
     Config config = await getConfig();
     String frequency = weekly ? "week": "day";
-    print('${config.apiBaseURL}/trending/all/$frequency?api_key=${config.apiKey}');
     final response = await http.get(Uri.parse('${config.apiBaseURL}/trending/all/$frequency?api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
       return FavoritesDTO.fromJson(jsonDecode(response.body), config.baseImageAPIURL).getResults();
