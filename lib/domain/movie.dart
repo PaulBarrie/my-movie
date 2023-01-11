@@ -1,5 +1,3 @@
-
-
 class Movie {
   final bool adult;
   final String imagePath;
@@ -17,6 +15,7 @@ class Movie {
   final bool video;
   final int voteCount;
   final List<String> originCountry;
+
   Movie({
     required this.adult,
     required this.imagePath,
@@ -43,22 +42,31 @@ class Movie {
     final String posterPath = baseImageUrl + json['poster_path'];
 
     return Movie(
-      adult: adult,
-      imagePath: imagePath,
-      id: json['id'].toString(),
-      title: json['name'].toString() == "null" ? json['title'].toString() : json['name'].toString(),
-      originalTitle: json['original_name'].toString(),
-      originalLanguage: json['original_language'].toString(),
-      overview: json['overview'].toString(),
-      posterPath: posterPath,
-      mediaType: json['media_type'].toString(),
-      genreIds: json['genre_ids'].toString().replaceAll("[", "").replaceAll("]", "").split(","),
-      popularity: double.parse(json['popularity'].toString()),
-      averageGrade: double.parse(json['vote_average'].toString()),
-      releaseDate: json['release_date'].toString(),
-      video: video,
-      voteCount: int.parse(json['vote_count'].toString()),
-      originCountry: json['origin_country'].toString().replaceAll("[", "").replaceAll("]", "").split(",")
-    );
+        adult: adult,
+        imagePath: imagePath,
+        id: json['id'].toString(),
+        title: json['name'].toString() == "null"
+            ? json['title'].toString()
+            : json['name'].toString(),
+        originalTitle: json['original_name'].toString(),
+        originalLanguage: json['original_language'].toString(),
+        overview: json['overview'].toString(),
+        posterPath: posterPath,
+        mediaType: json['media_type'].toString(),
+        genreIds: json['genre_ids']
+            .toString()
+            .replaceAll("[", "")
+            .replaceAll("]", "")
+            .split(","),
+        popularity: double.parse(json['popularity'].toString()),
+        averageGrade: double.parse(json['vote_average'].toString()),
+        releaseDate: json['release_date'].toString(),
+        video: video,
+        voteCount: int.parse(json['vote_count'].toString()),
+        originCountry: json['origin_country']
+            .toString()
+            .replaceAll("[", "")
+            .replaceAll("]", "")
+            .split(","));
   }
 }
