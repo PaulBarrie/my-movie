@@ -22,7 +22,7 @@ class _MovieListViewState extends State<MovieListView> {
   @override
   void initState() {
     super.initState();
-    webService = APIWebService(context);
+    webService = APIWebService();
     movieListFuture = webService.news(weekly: true);
   }
 

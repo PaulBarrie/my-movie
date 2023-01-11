@@ -1,25 +1,19 @@
 
 
-import 'package:http/src/response.dart';
+import 'package:http/http.dart';
 import 'package:my_movie/kernel/config.dart';
 import 'package:my_movie/service/dto/favorites_dto.dart';
 import 'package:my_movie/service/web_service.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../domain/movie.dart';
 import 'dart:async';
 import 'dart:convert';
 
 class APIWebService extends WebService {
-  final BuildContext context;
-
-
-  APIWebService(this.context);
-
   Future<Config> getConfig() async {
-     Config config = Config(context: context);
-     await config.load(context);
-     return Future(() => config.get(context));
+     Config config = Config();
+     await config.load();
+     return Future(() => config.get());
   }
 
   @override
