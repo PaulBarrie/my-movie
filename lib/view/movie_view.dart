@@ -19,12 +19,16 @@ class MovieView extends StatefulWidget {
 class _MovieViewState extends State<MovieView> {
   late Movie movie;
   late FavouriteService favouriteService;
+  late bool isFavourite = false;
 
   @override
   void initState() {
     super.initState();
     favouriteService = DatabaseFavouriteService();
     movie = widget.movie;
+    favouriteService.isFavourite(movie).then((value) => setState(() {
+          isFavourite = value;
+        }));
   }
 
   String getMovieType(String mediaType) {
@@ -37,6 +41,15 @@ class _MovieViewState extends State<MovieView> {
 
   void handleOnFavorite() async {
     await favouriteService.toggleFavourite(movie);
+    setState(() {
+      isFavourite = !isFavourite;
+    });
+  }
+
+  String getFavouriteButtonText() {
+    return isFavourite
+        ? AppLocalizations.of(context)!.removeFromFavourites
+        : AppLocalizations.of(context)!.addToFavourites;
   }
 
   @override
@@ -109,7 +122,7 @@ class _MovieViewState extends State<MovieView> {
               ),
               TextButton(
                 onPressed: handleOnFavorite,
-                child: const Text("Favourite"),
+                child: Text(getFavouriteButtonText()),
               ),
             ],
           ),

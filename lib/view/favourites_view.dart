@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie/components/movie_item_list_component.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
 import 'package:my_movie/service/favourite_service.dart';
@@ -27,12 +28,11 @@ class _FavouritesViewState extends State<FavouritesView> {
       future: moviePreviewListFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          print(snapshot.data);
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(snapshot.data![index].title),
+              return MovieItemListComponent(
+                moviePreview: snapshot.data![index],
               );
             },
           );

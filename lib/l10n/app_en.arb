@@ -4,5 +4,7 @@
   "votes": "votes",
   "movie": "Movie",
   "tvShow": "TV show",
-  "series": "Series"
+  "series": "Series",
+  "removeFromFavourites": "Remove from favourites",
+  "addToFavourites": "Add to favourites"
 }
