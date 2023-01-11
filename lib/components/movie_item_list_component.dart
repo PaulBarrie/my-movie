@@ -25,35 +25,37 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
     String voteSentence =
         "${moviePreview.voteCount} ${AppLocalizations.of(context)!.votes}";
     return Container(
-        color: Colors.white70,
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage(moviePreview.imagePath),
-                        fit: BoxFit.fill),
+      color: Colors.white70,
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(moviePreview.imagePath),
+                    fit: BoxFit.fill,
                   ),
                 ),
-                title: Text(moviePreview.title),
-                subtitle: Text(moviePreview.overview),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  GradeStar(value: (moviePreview.averageGrade / 2).round()),
-                  const SizedBox(width: 50),
-                  Text(voteSentence),
-                ],
-              ),
-            ],
-          ),
-        ));
+              title: Text(moviePreview.title),
+              subtitle: Text(moviePreview.overview),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GradeStar(value: (moviePreview.averageGrade / 2).round()),
+                const SizedBox(width: 50),
+                Text(voteSentence),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -5,6 +5,8 @@ import '../domain/movie.dart';
 abstract class FavouriteService {
   Future<List<MoviePreview>> getFavourites();
 
+  Future<void> toggleFavourite(Movie movie);
+
   Future<void> addFavourite(Movie movie);
 
   Future<void> removeFavourite(Movie movie);

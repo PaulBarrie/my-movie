@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/view/favorites_view.dart';
+import 'package:my_movie/view/favourites_view.dart';
 import 'package:my_movie/view/movie_list_view.dart';
 
 
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const List<Widget> _pages = <Widget>[
     MovieListView(),
-    FavoritesView()
+    FavouritesView()
   ];
 
 

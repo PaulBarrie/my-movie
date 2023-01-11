@@ -7,6 +7,15 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseFavouriteService implements FavouriteService {
+  static final DatabaseFavouriteService _singleton =
+      DatabaseFavouriteService._internal();
+
+  factory DatabaseFavouriteService() {
+    return _singleton;
+  }
+
+  DatabaseFavouriteService._internal();
+
   static const String _databaseName = 'my_movie.db';
   static const String _tableName = 'favourites';
 
@@ -73,5 +82,14 @@ class DatabaseFavouriteService implements FavouriteService {
       where: 'id = ?',
       whereArgs: [movie.id],
     );
+  }
+
+  @override
+  Future<void> toggleFavourite(Movie movie) async {
+    if (await isFavourite(movie)) {
+      await removeFavourite(movie);
+    } else {
+      await addFavourite(movie);
+    }
   }
 }
