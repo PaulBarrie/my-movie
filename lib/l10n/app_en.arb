@@ -6,5 +6,6 @@
   "tvShow": "TV show",
   "series": "Series",
   "removeFromFavourites": "Remove from favourites",
-  "addToFavourites": "Add to favourites"
+  "addToFavourites": "Add to favourites",
+  "favourites": "Favourites"
 }

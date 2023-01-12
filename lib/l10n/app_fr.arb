@@ -6,5 +6,6 @@
   "tvShow": "Émission TV",
   "series": "Série",
   "removeFromFavourites": "Retirer des favoris",
-  "addToFavourites": "Ajouter aux favoris"
+  "addToFavourites": "Ajouter aux favoris",
+  "favourites": "Favoris"
 }
