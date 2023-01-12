@@ -11,7 +11,7 @@ abstract class FavouriteService {
 
   Future<void> removeFavourite(Movie movie);
 
-  Future<bool> isFavourite(Movie movie);
+  Future<bool> isFavourite(String movieId);
 
   Future<void> clearFavourites();
 }

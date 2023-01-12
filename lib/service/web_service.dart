@@ -5,5 +5,5 @@ abstract class WebService {
 
   Future<List<Movie>> news({bool weekly = true});
 
-  Future<Movie?> get(String id);
+  Future<Movie> get(String id);
 }

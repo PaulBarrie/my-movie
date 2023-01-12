@@ -64,12 +64,12 @@ class DatabaseFavouriteService implements FavouriteService {
   }
 
   @override
-  Future<bool> isFavourite(Movie movie) async {
+  Future<bool> isFavourite(String movieId) async {
     final Database db = await _getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(
       _tableName,
       where: 'id = ?',
-      whereArgs: [movie.id],
+      whereArgs: [movieId],
     );
     return maps.isNotEmpty;
   }
@@ -86,7 +86,7 @@ class DatabaseFavouriteService implements FavouriteService {
 
   @override
   Future<void> toggleFavourite(Movie movie) async {
-    if (await isFavourite(movie)) {
+    if (await isFavourite(movie.id)) {
       await removeFavourite(movie);
     } else {
       await addFavourite(movie);

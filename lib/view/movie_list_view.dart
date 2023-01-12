@@ -53,8 +53,9 @@ class _MovieListViewState extends State<MovieListView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                MovieView(movie: snapshot.data![index]),
+                            builder: (context) => MovieView(
+                              movieId: snapshot.data![index].id,
+                            ),
                           ),
                         );
                       },
