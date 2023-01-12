@@ -3,6 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/grade_star.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 
+import '../view/movie_view.dart';
+
 class MovieItemListComponent extends StatefulWidget {
   final MoviePreview moviePreview;
 
@@ -26,34 +28,46 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
         "${moviePreview.voteCount} ${AppLocalizations.of(context)!.votes}";
     return Container(
       color: Colors.white70,
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(moviePreview.imagePath),
-                    fit: BoxFit.fill,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieView(
+                movieId: moviePreview.id,
+              ),
+            ),
+          );
+        },
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(moviePreview.imagePath),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
+                title: Text(moviePreview.title),
+                subtitle: Text(moviePreview.overview),
               ),
-              title: Text(moviePreview.title),
-              subtitle: Text(moviePreview.overview),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                GradeStar(value: (moviePreview.averageGrade / 2).round()),
-                const SizedBox(width: 50),
-                Text(voteSentence),
-              ],
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GradeStar(value: (moviePreview.averageGrade / 2).round()),
+                  const SizedBox(width: 50),
+                  Text(voteSentence),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

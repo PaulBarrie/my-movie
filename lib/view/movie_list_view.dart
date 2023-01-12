@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/components/movie_item_list_component.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
 
-import 'movie_view.dart';
+import '../components/movie_item_list_component.dart';
 
 class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);
@@ -48,23 +47,9 @@ class _MovieListViewState extends State<MovieListView> {
                 key: centerKey,
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MovieView(
-                              movieId: snapshot.data![index].id,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: MovieItemListComponent(
-                            moviePreview:
-                                MoviePreview.fromMovie(snapshot.data![index])),
-                      ),
+                    return MovieItemListComponent(
+                      moviePreview:
+                          MoviePreview.fromMovie(snapshot.data![index]),
                     );
                   },
                   childCount: snapshot.data!.length,
