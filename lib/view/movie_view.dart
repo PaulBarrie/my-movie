@@ -63,6 +63,7 @@ class _MovieViewState extends State<MovieView> {
         future: movieFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            movie = snapshot.data!;
             String mediaOrigin =
                 '${CountryEmoji().get(snapshot.data!.originalLanguage)} ${getMovieType(snapshot.data!.mediaType)}';
             String nbVotesSentence =
