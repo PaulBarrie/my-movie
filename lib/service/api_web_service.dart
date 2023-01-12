@@ -9,8 +9,7 @@ import 'package:my_movie/service/web_service.dart';
 import '../domain/movie.dart';
 
 class APIWebService extends WebService {
-  static final APIWebService _singleton =
-  APIWebService._internal();
+  static final APIWebService _singleton = APIWebService._internal();
 
   factory APIWebService() {
     return _singleton;
@@ -42,7 +41,7 @@ class APIWebService extends WebService {
   }
 
   @override
-  Future<Movie> get(String id) async {
+  Future<Movie> getMovie(String id) async {
     Config config = await getConfig();
     final response = await http.get(
         Uri.parse('${config.apiBaseURL}/movie/$id?api_key=${config.apiKey}'));
@@ -50,6 +49,18 @@ class APIWebService extends WebService {
       return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL);
     } else {
       throw Exception('Failed to load movie.');
+    }
+  }
+
+  @override
+  Future<Movie> getTv(String id) async {
+    Config config = await getConfig();
+    final response = await http
+        .get(Uri.parse('${config.apiBaseURL}/tv/$id?api_key=${config.apiKey}'));
+    if (response.statusCode == 200) {
+      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL);
+    } else {
+      throw Exception('Failed to load tv.');
     }
   }
 

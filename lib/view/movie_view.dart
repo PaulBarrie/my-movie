@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/country_emoji.dart';
+import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/domain/movie.dart';
+import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
 import 'package:my_movie/service/favourite_service.dart';
@@ -10,15 +12,17 @@ import 'package:my_movie/service/web_service.dart';
 import '../components/grade_star.dart';
 
 class MovieView extends StatefulWidget {
-  final String movieId;
+  final MoviePreview moviePreview;
 
-  const MovieView({Key? key, required this.movieId}) : super(key: key);
+  const MovieView({Key? key, required this.moviePreview}) : super(key: key);
 
   @override
   State<MovieView> createState() => _MovieViewState();
 }
 
 class _MovieViewState extends State<MovieView> {
+  MoviePreview get moviePreview => widget.moviePreview;
+
   late Movie movie;
   late FavouriteService favouriteService;
   late WebService webService;
@@ -30,8 +34,10 @@ class _MovieViewState extends State<MovieView> {
     super.initState();
     favouriteService = DatabaseFavouriteService();
     webService = APIWebService();
-    movieFuture = webService.get(widget.movieId);
-    favouriteService.isFavourite(widget.movieId).then((value) => setState(() {
+    movieFuture = moviePreview.mediaType == "movie"
+        ? webService.getMovie(moviePreview.id)
+        : webService.getTv(moviePreview.id);
+    favouriteService.isFavourite(moviePreview.id).then((value) => setState(() {
           isFavourite = value;
         }));
   }
@@ -82,26 +88,26 @@ class _MovieViewState extends State<MovieView> {
                           fit: BoxFit.cover,
                         ),
                       ),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.8),
+                            ],
+                          ),
+                        ),
+                      ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           ListTile(
-                            leading: Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(snapshot.data!.imagePath),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
                             title: Text(
                               snapshot.data!.title,
                               style: const TextStyle(
                                 color: Colors.white,
-                                backgroundColor: Colors.white12,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25,
                               ),
@@ -144,10 +150,7 @@ class _MovieViewState extends State<MovieView> {
             return Text("${snapshot.error}");
           } else {
             return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: CircularProgressIndicator(),
-              ),
+              child: CustomProgressIndicator(),
             );
           }
         });

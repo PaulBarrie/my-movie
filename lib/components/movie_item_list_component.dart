@@ -32,7 +32,7 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
           context,
           MaterialPageRoute(
             builder: (context) => MovieView(
-              movieId: moviePreview.id,
+              moviePreview: moviePreview,
             ),
           ),
         );

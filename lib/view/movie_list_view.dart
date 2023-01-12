@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/api_web_service.dart';
@@ -61,10 +62,7 @@ class _MovieListViewState extends State<MovieListView> {
             }
             return const SliverToBoxAdapter(
               child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(),
-                ),
+                child: CustomProgressIndicator(),
               ),
             );
           },

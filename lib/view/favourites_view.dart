@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/movie_item_list_component.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
@@ -45,10 +46,7 @@ class _FavouritesViewState extends State<FavouritesView> {
             return Text("${snapshot.error}");
           }
           return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: CircularProgressIndicator(),
-            ),
+            child: CustomProgressIndicator(),
           );
         },
       ),

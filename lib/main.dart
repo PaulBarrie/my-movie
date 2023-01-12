@@ -49,8 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
       title: AppLocalizations.of(context)!.appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color(0xFF984447),
-          secondary: const Color(0xFF2E294E),
+          primary: const Color(0xFF2E4057),
+          secondary: const Color(0xFF66A182),
         ),
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,

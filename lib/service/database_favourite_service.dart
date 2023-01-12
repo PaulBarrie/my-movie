@@ -19,15 +19,21 @@ class DatabaseFavouriteService implements FavouriteService {
   static const String _databaseName = 'my_movie.db';
   static const String _tableName = 'favourites';
 
+  onCreate(db, _) {
+    return db.execute(
+      "CREATE TABLE $_tableName(id TEXT PRIMARY KEY, imagePath TEXT, title TEXT, overview TEXT, averageGrade REAL, voteCount INTEGER, mediaType TEXT)",
+    );
+  }
+
   Future<Database> _getDatabase() async {
     return openDatabase(
       join(await getDatabasesPath(), _databaseName),
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE $_tableName(id TEXT PRIMARY KEY, imagePath TEXT, title TEXT, overview TEXT, averageGrade REAL, voteCount INTEGER)",
-        );
+      onCreate: onCreate,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        await db.execute("DROP TABLE IF EXISTS $_tableName");
+        onCreate(db, newVersion);
       },
-      version: 1,
+      version: 2,
     );
   }
 
@@ -59,6 +65,7 @@ class DatabaseFavouriteService implements FavouriteService {
         maps[i]['overview'],
         maps[i]['averageGrade'],
         maps[i]['voteCount'],
+        maps[i]['mediaType'],
       );
     });
   }
