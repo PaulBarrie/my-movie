@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GradeStar extends StatelessWidget {
-  final int value;  
+  final int value;
+
   const GradeStar({super.key, this.value = 0});
 
   @override
@@ -14,7 +13,7 @@ class GradeStar extends StatelessWidget {
       children: List.generate(5, (index) {
         return Icon(
           index < value ? Icons.star : Icons.star_border,
-          color: Colors.green,
+          color: Theme.of(context).colorScheme.secondary,
         );
       }),
     );

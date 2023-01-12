@@ -26,20 +26,20 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
     MoviePreview moviePreview = widget.moviePreview;
     String voteSentence =
         "${moviePreview.voteCount} ${AppLocalizations.of(context)!.votes}";
-    return Container(
-      color: Colors.white70,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieView(
-                movieId: moviePreview.id,
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MovieView(
+              movieId: moviePreview.id,
             ),
-          );
-        },
-        child: Card(
+          ),
+        );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -51,7 +51,7 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: NetworkImage(moviePreview.imagePath),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

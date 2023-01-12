@@ -33,10 +33,9 @@ class _MovieListViewState extends State<MovieListView> {
       slivers: <Widget>[
         SliverAppBar(
           pinned: true,
-          backgroundColor: Colors.green,
           expandedHeight: 250.0,
           flexibleSpace: FlexibleSpaceBar(
-            title: Text(AppLocalizations.of(context)!.search),
+            title: Text(AppLocalizations.of(context)!.movies),
           ),
         ),
         FutureBuilder<List<Movie>>(
