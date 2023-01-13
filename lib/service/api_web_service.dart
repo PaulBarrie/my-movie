@@ -66,6 +66,17 @@ class APIWebService extends WebService {
 
   @override
   Future<List<Movie>> search(String search) async {
-    return [];
+    Config config = await getConfig();
+    final response = await http.get(Uri.parse(
+        '${config.apiBaseURL}/search/multi?query=$search&api_key=${config.apiKey}'));
+    if (response.statusCode == 200) {
+      return FavoritesDTO.fromJson(
+              jsonDecode(response.body), config.baseImageAPIURL)
+          .getResults();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to search.');
+    }
   }
 }

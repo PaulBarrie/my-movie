@@ -1,12 +1,12 @@
 class Movie {
   final bool adult;
-  final String imagePath;
+  final String? imagePath;
   final String id;
   final String title;
   final String originalTitle;
   final String originalLanguage;
   final String overview;
-  final String posterPath;
+  final String? posterPath;
   final String mediaType;
   final List<String> genreIds;
   final double popularity;
@@ -38,8 +38,9 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json, String baseImageUrl) {
     final bool adult = (json['adult'].toString().toLowerCase() == "true");
     final bool video = (json['video'].toString().toLowerCase() == "true");
-    final String imagePath = baseImageUrl + json['poster_path'];
-    final String posterPath = baseImageUrl + json['poster_path'];
+    final String? imagePath =
+        json['poster_path'] != null ? baseImageUrl + json['poster_path'] : null;
+    final String? posterPath = imagePath;
 
     return Movie(
         adult: adult,

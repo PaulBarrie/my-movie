@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/components/grade_star.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 
@@ -19,6 +20,24 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Widget _getTileHeader(MoviePreview moviePreview) {
+    if (moviePreview.imagePath != null) {
+      return Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            image: NetworkImage(moviePreview.imagePath!),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    } else {
+      return const EmptyWidget();
+    }
   }
 
   @override
@@ -44,17 +63,7 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(moviePreview.imagePath),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+                leading: _getTileHeader(moviePreview),
                 title: Text(moviePreview.title),
                 subtitle: Text(moviePreview.overview),
               ),

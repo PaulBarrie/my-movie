@@ -1,7 +1,7 @@
 import 'movie.dart';
 
 class MoviePreview {
-  final String imagePath;
+  final String? imagePath;
   final String id;
   final String title;
   final String overview;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/country_emoji.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
+import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/api_web_service.dart';
@@ -63,6 +64,19 @@ class _MovieViewState extends State<MovieView> {
         : AppLocalizations.of(context)!.addToFavourites;
   }
 
+  Widget _getPoster(Movie movie) {
+    if (movie.posterPath != null) {
+      return Positioned.fill(
+        child: Image.network(
+          movie.posterPath!,
+          fit: BoxFit.cover,
+        ),
+      );
+    } else {
+      return const EmptyWidget();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Movie>(
@@ -82,12 +96,7 @@ class _MovieViewState extends State<MovieView> {
                   expandedHeight: 250.0,
                   flexibleSpace: Stack(
                     children: <Widget>[
-                      Positioned.fill(
-                        child: Image.network(
-                          snapshot.data!.posterPath,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      _getPoster(movie),
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(

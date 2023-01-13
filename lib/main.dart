@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/view/favourites_view.dart';
 import 'package:my_movie/view/movie_list_view.dart';
+import 'package:my_movie/view/search_view.dart';
 
 void main() async {
   runApp(const App());
@@ -34,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const List<Widget> _pages = <Widget>[
     MovieListView(),
-    FavouritesView()
+    FavouritesView(),
+    SearchView()
   ];
 
   void _onItemTapped(int index) {
@@ -68,6 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: const Icon(Icons.favorite),
               label: AppLocalizations.of(context)!.favourites,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.search),
+              label: AppLocalizations.of(context)!.search,
             ),
           ],
           currentIndex: _selectedIndex,
