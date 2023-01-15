@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          selectedItemColor: Theme.of(context).colorScheme.secondary,
+          selectedItemColor: const Color(0xFF66A182),
         ),
       ),
     );
