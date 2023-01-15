@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/view/favourites_view.dart';
 import 'package:my_movie/view/movie_list_view.dart';
-import 'package:my_movie/view/search_view.dart';
 
 void main() async {
   runApp(const App());
@@ -13,11 +12,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "translate('app.title')",
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -36,7 +35,6 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<Widget> _pages = <Widget>[
     MovieListView(),
     FavouritesView(),
-    SearchView()
   ];
 
   void _onItemTapped(int index) {
@@ -71,13 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.favorite),
               label: AppLocalizations.of(context)!.favourites,
             ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.search),
-              label: AppLocalizations.of(context)!.search,
-            ),
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
+import 'package:my_movie/components/custom_search_delegate.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/api_web_service.dart';
@@ -38,6 +39,17 @@ class _MovieListViewState extends State<MovieListView> {
           flexibleSpace: FlexibleSpaceBar(
             title: Text(AppLocalizations.of(context)!.movies),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(),
+                );
+              },
+              icon: const Icon(Icons.search),
+            )
+          ],
         ),
         FutureBuilder<List<Movie>>(
           future: movieListFuture,
