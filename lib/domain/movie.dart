@@ -35,7 +35,7 @@ class Movie {
     required this.originCountry,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json, String baseImageUrl) {
+  factory Movie.fromJson(Map<String, dynamic> json, String baseImageUrl, [String? mediaType]) {
     final bool adult = (json['adult'].toString().toLowerCase() == "true");
     final bool video = (json['video'].toString().toLowerCase() == "true");
     final String? imagePath =
@@ -53,7 +53,7 @@ class Movie {
         originalLanguage: json['original_language'].toString(),
         overview: json['overview'].toString(),
         posterPath: posterPath,
-        mediaType: json['media_type'].toString(),
+        mediaType: mediaType ?? json['media_type'].toString(),
         genreIds: json['genre_ids']
             .toString()
             .replaceAll("[", "")

@@ -34,14 +34,20 @@ class _FavouritesViewState extends State<FavouritesView> {
         future: moviePreviewListFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return MovieItemListComponent(
-                  moviePreview: snapshot.data![index],
-                );
-              },
-            );
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(AppLocalizations.of(context)!.noFavourites),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return MovieItemListComponent(
+                    moviePreview: snapshot.data![index],
+                  );
+                },
+              );
+            }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }

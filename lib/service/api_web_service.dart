@@ -46,7 +46,7 @@ class APIWebService extends WebService {
     final response = await http.get(
         Uri.parse('${config.apiBaseURL}/movie/$id?api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
-      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL);
+      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL, "movie");
     } else {
       throw Exception('Failed to load movie.');
     }
@@ -58,7 +58,7 @@ class APIWebService extends WebService {
     final response = await http
         .get(Uri.parse('${config.apiBaseURL}/tv/$id?api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
-      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL);
+      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL, "tv");
     } else {
       throw Exception('Failed to load tv.');
     }

@@ -8,5 +8,6 @@
   "series": "Series",
   "removeFromFavourites": "Remove from favourites",
   "addToFavourites": "Add to favourites",
-  "favourites": "Favourites"
+  "favourites": "Favourites",
+  "noFavourites": "No favourites"
 }
