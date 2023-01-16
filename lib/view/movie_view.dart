@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/components/country_emoji.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/empty_widget.dart';
+import 'package:my_movie/components/movie_detail_grade.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
 import 'package:my_movie/service/favourite_service.dart';
 import 'package:my_movie/service/web_service.dart';
-
-import '../components/grade_star.dart';
 
 class MovieView extends StatefulWidget {
   final MoviePreview moviePreview;
@@ -79,20 +77,17 @@ class _MovieViewState extends State<MovieView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Movie>(
+    return Scaffold(
+      body: FutureBuilder<Movie>(
         future: movieFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             movie = snapshot.data!;
-            String mediaOrigin =
-                '${CountryEmoji.get(snapshot.data!.originalLanguage)} ${getMovieType(snapshot.data!.mediaType)}';
-            String nbVotesSentence =
-                "${snapshot.data!.voteCount} ${AppLocalizations.of(context)!.votes}";
+            String mediaOrigin = getMovieType(snapshot.data!.mediaType);
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
                   pinned: true,
-                  backgroundColor: Colors.white24,
                   expandedHeight: 250.0,
                   flexibleSpace: Stack(
                     children: <Widget>[
@@ -115,11 +110,7 @@ class _MovieViewState extends State<MovieView> {
                           ListTile(
                             title: Text(
                               snapshot.data!.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                              ),
+                              style: Theme.of(context).textTheme.headline1,
                             ),
                           ),
                         ],
@@ -130,25 +121,52 @@ class _MovieViewState extends State<MovieView> {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      Container(
-                        color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 16,
+                          bottom: 8,
+                        ),
+                        child: Center(
+                          child: MovieDetailGrade(
+                            votes: snapshot.data!.voteCount,
+                            grade: (moviePreview.averageGrade / 2).round(),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(mediaOrigin),
-                            Column(
-                              children: [
-                                GradeStar(
-                                    value: snapshot.data!.averageGrade.round()),
-                                Text(nbVotesSentence),
-                              ],
+                            Text(
+                              mediaOrigin,
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            ElevatedButton(
+                              onPressed: handleOnFavorite,
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .secondary // Text Color
+                                  ),
+                              child: Text(getFavouriteButtonText()),
                             ),
                           ],
                         ),
                       ),
-                      TextButton(
-                        onPressed: handleOnFavorite,
-                        child: Text(getFavouriteButtonText()),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Synopsis",
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          snapshot.data!.overview,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ],
                   ),
@@ -162,6 +180,8 @@ class _MovieViewState extends State<MovieView> {
               child: CustomProgressIndicator(),
             );
           }
-        });
+        },
+      ),
+    );
   }
 }

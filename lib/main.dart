@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/theme.dart';
 import 'package:my_movie/view/favourites_view.dart';
 import 'package:my_movie/view/movie_list_view.dart';
 
@@ -29,11 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var currentSearch = "";
   int _selectedIndex = 0;
-
-  final Color primaryColor = const Color(0xFF2E4057);
-  final Color secondaryColor = const Color(0xFF66A182);
 
   static const List<Widget> _pages = <Widget>[
     MovieListView(),
@@ -50,12 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppLocalizations.of(context)!.appName,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: primaryColor,
-          secondary: secondaryColor,
-        ),
-      ),
+      theme: appTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
