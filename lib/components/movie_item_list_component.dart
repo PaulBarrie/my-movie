@@ -40,44 +40,30 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
     }
   }
 
+  void _handleOnTap(MoviePreview moviePreview) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MovieView(
+          moviePreview: moviePreview,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     MoviePreview moviePreview = widget.moviePreview;
     String voteSentence =
         "${moviePreview.voteCount} ${AppLocalizations.of(context)!.votes}";
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MovieView(
-              moviePreview: moviePreview,
-            ),
-          ),
-        );
-      },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: _getTileHeader(moviePreview),
-                title: Text(moviePreview.title),
-                subtitle: Text(moviePreview.overview),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  GradeStar(value: (moviePreview.averageGrade / 2).round()),
-                  const SizedBox(width: 50),
-                  Text(voteSentence),
-                ],
-              ),
-            ],
-          ),
-        ),
+
+    return ListTile(
+      onTap: () => _handleOnTap(moviePreview),
+      leading: _getTileHeader(moviePreview),
+      title: Text(moviePreview.title),
+      subtitle: Text(voteSentence),
+      trailing: GradeStar(
+        value: (moviePreview.averageGrade / 2).round(),
       ),
     );
   }

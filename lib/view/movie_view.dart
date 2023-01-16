@@ -85,7 +85,7 @@ class _MovieViewState extends State<MovieView> {
           if (snapshot.hasData) {
             movie = snapshot.data!;
             String mediaOrigin =
-                '${CountryEmoji().get(snapshot.data!.originalLanguage)} ${getMovieType(snapshot.data!.mediaType)}';
+                '${CountryEmoji.get(snapshot.data!.originalLanguage)} ${getMovieType(snapshot.data!.mediaType)}';
             String nbVotesSentence =
                 "${snapshot.data!.voteCount} ${AppLocalizations.of(context)!.votes}";
             return CustomScrollView(
