@@ -2,7 +2,7 @@
     package="com.esgi.my_movie">
    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="my_movie"
+        android:label="Scavie"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

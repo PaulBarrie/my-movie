@@ -32,6 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
   var currentSearch = "";
   int _selectedIndex = 0;
 
+  final Color primaryColor = const Color(0xFF2E4057);
+  final Color secondaryColor = const Color(0xFF66A182);
+
   static const List<Widget> _pages = <Widget>[
     MovieListView(),
     FavouritesView(),
@@ -49,8 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
       title: AppLocalizations.of(context)!.appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color(0xFF2E4057),
-          secondary: const Color(0xFF66A182),
+          primary: primaryColor,
+          secondary: secondaryColor,
         ),
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -72,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          selectedItemColor: const Color(0xFF66A182),
+          selectedItemColor: secondaryColor,
         ),
       ),
     );
