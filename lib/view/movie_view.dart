@@ -95,33 +95,28 @@ class _MovieViewState extends State<MovieView> {
                 SliverAppBar(
                   pinned: true,
                   expandedHeight: 250.0,
-                  flexibleSpace: Stack(
-                    children: <Widget>[
-                      _getPoster(movie),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.8),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              movie.title,
-                              style: Theme.of(context).textTheme.headline1,
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Text(
+                      movie.title,
+                    ),
+                    background: Stack(
+                      children: [
+                        _getPoster(movie),
+                        Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black,
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SliverList(
