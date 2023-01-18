@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/custom_search_delegate.dart';
+import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/domain/news.dart';
@@ -18,18 +19,36 @@ class MovieListView extends StatefulWidget {
 }
 
 class _MovieListViewState extends State<MovieListView> {
+  final SCROLL_LOADING_LIMIT = 200;
+
   late WebService webService;
   var search = "";
   late Future<News> newsFuture;
   final List<Movie> movies = [];
   int page = 0;
   late int totalPages;
+  bool isLoading = false;
+  final _mainScrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     webService = APIWebService();
     newsFuture = webService.news(weekly: true);
+    _mainScrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (page > 0 &&
+        _mainScrollController.position.pixels >
+            _mainScrollController.position.maxScrollExtent -
+                SCROLL_LOADING_LIMIT) {
+      if (page < totalPages) {
+        setState(() {
+          loadMoreMovies();
+        });
+      }
+    }
   }
 
   void loadMovies(News news) {
@@ -38,11 +57,24 @@ class _MovieListViewState extends State<MovieListView> {
     movies.addAll(news.results);
   }
 
-  void loadMoreMovies() async {
-    if (page < totalPages) {
+  Future<void> loadMoreMovies() async {
+    if (!isLoading && page < totalPages) {
+      setState(() {
+        isLoading = true;
+      });
       News news = await webService.news(weekly: true, page: page + 1);
       loadMovies(news);
-      setState(() {});
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Widget getLoadComponent() {
+    if (isLoading) {
+      return const CustomProgressIndicator();
+    } else {
+      return const EmptyWidget();
     }
   }
 
@@ -50,6 +82,7 @@ class _MovieListViewState extends State<MovieListView> {
   Widget build(BuildContext context) {
     const Key centerKey = ValueKey<String>('movie-sliver-list');
     return CustomScrollView(
+      controller: _mainScrollController,
       slivers: <Widget>[
         SliverAppBar(
           pinned: true,
@@ -80,11 +113,16 @@ class _MovieListViewState extends State<MovieListView> {
                 key: centerKey,
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return MovieItemListComponent(
-                      moviePreview: MoviePreview.fromMovie(movies[index]),
+                    if (index < movies.length) {
+                      return MovieItemListComponent(
+                        moviePreview: MoviePreview.fromMovie(movies[index]),
+                      );
+                    }
+                    return Center(
+                      child: getLoadComponent(),
                     );
                   },
-                  childCount: movies.length,
+                  childCount: movies.length + 1,
                 ),
               );
             } else if (snapshot.hasError) {
@@ -98,14 +136,6 @@ class _MovieListViewState extends State<MovieListView> {
               ),
             );
           },
-        ),
-        SliverToBoxAdapter(
-          child: Center(
-            child: TextButton(
-              onPressed: loadMoreMovies,
-              child: const Text("Load more"),
-            ),
-          ),
         ),
       ],
     );
