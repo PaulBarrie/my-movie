@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:my_movie/domain/news.dart';
 import 'package:my_movie/kernel/config.dart';
-import 'package:my_movie/service/dto/favorites_dto.dart';
+import 'package:my_movie/mapper/news_mapper.dart';
+import 'package:my_movie/service/dto/news_response.dart';
 import 'package:my_movie/service/web_service.dart';
 
 import '../domain/movie.dart';
@@ -24,15 +26,15 @@ class APIWebService extends WebService {
   }
 
   @override
-  Future<List<Movie>> news({bool weekly = true}) async {
+  Future<News> news({int page = 1, bool weekly = true}) async {
     Config config = await getConfig();
     String frequency = weekly ? "week" : "day";
     final response = await http.get(Uri.parse(
-        '${config.apiBaseURL}/trending/all/$frequency?api_key=${config.apiKey}'));
+        '${config.apiBaseURL}/trending/all/$frequency?page=$page&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
-      return FavoritesDTO.fromJson(
-              jsonDecode(response.body), config.baseImageAPIURL)
-          .getResults();
+      NewsResponse newsResponse = NewsResponse.fromJson(
+          jsonDecode(response.body), config.baseImageAPIURL);
+      return NewsMapper.fromDTO(newsResponse);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -46,7 +48,8 @@ class APIWebService extends WebService {
     final response = await http.get(
         Uri.parse('${config.apiBaseURL}/movie/$id?api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
-      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL, "movie");
+      return Movie.fromJson(
+          jsonDecode(response.body), config.baseImageAPIURL, "movie");
     } else {
       throw Exception('Failed to load movie.');
     }
@@ -58,7 +61,8 @@ class APIWebService extends WebService {
     final response = await http
         .get(Uri.parse('${config.apiBaseURL}/tv/$id?api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
-      return Movie.fromJson(jsonDecode(response.body), config.baseImageAPIURL, "tv");
+      return Movie.fromJson(
+          jsonDecode(response.body), config.baseImageAPIURL, "tv");
     } else {
       throw Exception('Failed to load tv.');
     }
@@ -70,9 +74,9 @@ class APIWebService extends WebService {
     final response = await http.get(Uri.parse(
         '${config.apiBaseURL}/search/multi?query=$search&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
-      return FavoritesDTO.fromJson(
+      return NewsResponse.fromJson(
               jsonDecode(response.body), config.baseImageAPIURL)
-          .getResults();
+          .results;
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

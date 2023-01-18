@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: const Icon(Icons.movie),
-              label: AppLocalizations.of(context)!.movies,
+              label: AppLocalizations.of(context)!.trends,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.favorite),

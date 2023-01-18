@@ -1,9 +1,10 @@
-import '../domain/movie.dart';
+import 'package:my_movie/domain/movie.dart';
+import 'package:my_movie/domain/news.dart';
 
 abstract class WebService {
   Future<List<Movie>> search(String search);
 
-  Future<List<Movie>> news({bool weekly = true});
+  Future<News> news({int page = 1, bool weekly = true});
 
   Future<Movie> getMovie(String id);
 
