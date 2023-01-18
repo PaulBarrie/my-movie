@@ -10,5 +10,6 @@
   "removeFromFavourites": "Retirer des favoris",
   "addToFavourites": "Ajouter aux favoris",
   "favourites": "Favoris",
-  "noFavourites": "Aucun favori"
+  "noFavourites": "Aucun favori",
+  "seeAll": "Voir tout"
 }

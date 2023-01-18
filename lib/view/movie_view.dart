@@ -3,8 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/components/movie_detail_grade.dart';
+import 'package:my_movie/components/video_list.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
+import 'package:my_movie/domain/video.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
 import 'package:my_movie/service/favourite_service.dart';
@@ -166,6 +168,33 @@ class _MovieViewState extends State<MovieView> {
                         child: Text(
                           snapshot.data!.overview,
                           style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: VideoList(
+                          videos: [
+                            Video(
+                              id: "1",
+                              name: "Video 1",
+                              type: "Trailer",
+                            ),
+                            Video(
+                              id: "2",
+                              name: "Video 2",
+                              type: "Trailer",
+                            ),
+                            Video(
+                              id: "3",
+                              name: "Video 3",
+                              type: "Trailer",
+                            ),
+                            Video(
+                              id: "4",
+                              name: "Video 4",
+                              type: "Trailer",
+                            ),
+                          ],
                         ),
                       ),
                     ],

@@ -10,5 +10,6 @@
   "removeFromFavourites": "Remove from favourites",
   "addToFavourites": "Add to favourites",
   "favourites": "Favourites",
-  "noFavourites": "No favourites"
+  "noFavourites": "No favourites",
+  "seeAll": "See all"
 }
