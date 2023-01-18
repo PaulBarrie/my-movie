@@ -2,13 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/news.dart';
+import 'package:my_movie/domain/video.dart';
 import 'package:my_movie/kernel/config.dart';
 import 'package:my_movie/mapper/news_mapper.dart';
+import 'package:my_movie/mapper/video_mapper.dart';
 import 'package:my_movie/service/dto/news_response.dart';
+import 'package:my_movie/service/dto/videos_response.dart';
 import 'package:my_movie/service/web_service.dart';
-
-import '../domain/movie.dart';
 
 class APIWebService extends WebService {
   static final APIWebService _singleton = APIWebService._internal();
@@ -36,8 +38,6 @@ class APIWebService extends WebService {
           jsonDecode(response.body), config.baseImageAPIURL);
       return NewsMapper.fromDTO(newsResponse);
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load favorites movies.');
     }
   }
@@ -78,9 +78,22 @@ class APIWebService extends WebService {
               jsonDecode(response.body), config.baseImageAPIURL)
           .results;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to search.');
+    }
+  }
+
+  @override
+  Future<List<Video>> getVideos(String id) async {
+    Config config = await getConfig();
+    final response = await http.get(Uri.parse(
+        '${config.apiBaseURL}/movie/$id/videos?api_key=${config.apiKey}'));
+    if (response.statusCode == 200) {
+      return VideosResponse.fromJson(jsonDecode(response.body))
+          .results
+          .map(VideoMapper.fromDTO)
+          .toList();
+    } else {
+      throw Exception('Failed to load videos.');
     }
   }
 }

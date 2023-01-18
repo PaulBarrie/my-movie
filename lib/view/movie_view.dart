@@ -10,6 +10,7 @@ import 'package:my_movie/domain/video.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
 import 'package:my_movie/service/favourite_service.dart';
+import 'package:my_movie/service/video_service.dart';
 import 'package:my_movie/service/web_service.dart';
 
 class MovieView extends StatefulWidget {
@@ -26,15 +27,17 @@ class _MovieViewState extends State<MovieView> {
 
   late Movie movie;
   late FavouriteService favouriteService;
-  late WebService webService;
   late Future<Movie> movieFuture;
+  late Future<List<Video>> videosFuture;
   late bool isFavourite = false;
 
   @override
   void initState() {
     super.initState();
     favouriteService = DatabaseFavouriteService();
-    webService = APIWebService();
+    final WebService webService = APIWebService();
+    final VideoService videoService = VideoService();
+    videosFuture = videoService.getVideos(moviePreview.id);
     movieFuture = moviePreview.mediaType == "movie"
         ? webService.getMovie(moviePreview.id)
         : webService.getTv(moviePreview.id);
@@ -80,12 +83,13 @@ class _MovieViewState extends State<MovieView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<Movie>(
-        future: movieFuture,
+      body: FutureBuilder(
+        future: Future.wait([movieFuture, videosFuture]),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            movie = snapshot.data!;
-            String mediaOrigin = getMovieType(snapshot.data!.mediaType);
+            movie = snapshot.data![0] as Movie;
+            final List<Video> videos = snapshot.data![1] as List<Video>;
+            String mediaOrigin = getMovieType(movie.mediaType);
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -111,7 +115,7 @@ class _MovieViewState extends State<MovieView> {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                              snapshot.data!.title,
+                              movie.title,
                               style: Theme.of(context).textTheme.headline1,
                             ),
                           ),
@@ -130,7 +134,7 @@ class _MovieViewState extends State<MovieView> {
                         ),
                         child: Center(
                           child: MovieDetailGrade(
-                            votes: snapshot.data!.voteCount,
+                            votes: movie.voteCount,
                             grade: (moviePreview.averageGrade / 2).round(),
                           ),
                         ),
@@ -166,35 +170,14 @@ class _MovieViewState extends State<MovieView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          snapshot.data!.overview,
+                          movie.overview,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: VideoList(
-                          videos: [
-                            Video(
-                              id: "1",
-                              name: "Video 1",
-                              type: "Trailer",
-                            ),
-                            Video(
-                              id: "2",
-                              name: "Video 2",
-                              type: "Trailer",
-                            ),
-                            Video(
-                              id: "3",
-                              name: "Video 3",
-                              type: "Trailer",
-                            ),
-                            Video(
-                              id: "4",
-                              name: "Video 4",
-                              type: "Trailer",
-                            ),
-                          ],
+                          videos: videos,
                         ),
                       ),
                     ],
