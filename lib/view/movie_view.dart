@@ -5,13 +5,11 @@ import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/components/movie_detail_grade.dart';
 import 'package:my_movie/components/video_list.dart';
 import 'package:my_movie/domain/movie.dart';
+import 'package:my_movie/domain/movie_details.dart';
 import 'package:my_movie/domain/movie_preview.dart';
-import 'package:my_movie/domain/video.dart';
-import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/database_favourite_service.dart';
 import 'package:my_movie/service/favourite_service.dart';
-import 'package:my_movie/service/video_service.dart';
-import 'package:my_movie/service/web_service.dart';
+import 'package:my_movie/service/movie_service.dart';
 
 class MovieView extends StatefulWidget {
   final MoviePreview moviePreview;
@@ -27,20 +25,16 @@ class _MovieViewState extends State<MovieView> {
 
   late Movie movie;
   late FavouriteService favouriteService;
-  late Future<Movie> movieFuture;
-  late Future<List<Video>> videosFuture;
+  late Future<MovieDetails> movieDetailsFuture;
   late bool isFavourite = false;
 
   @override
   void initState() {
     super.initState();
     favouriteService = DatabaseFavouriteService();
-    final WebService webService = APIWebService();
-    final VideoService videoService = VideoService();
-    videosFuture = videoService.getVideos(moviePreview.id);
-    movieFuture = moviePreview.mediaType == "movie"
-        ? webService.getMovie(moviePreview.id)
-        : webService.getTv(moviePreview.id);
+    final MovieService movieService = MovieService();
+    movieDetailsFuture =
+        movieService.getMovieDetails(moviePreview.id, moviePreview.mediaType);
     favouriteService.isFavourite(moviePreview.id).then((value) => setState(() {
           isFavourite = value;
         }));
@@ -84,11 +78,10 @@ class _MovieViewState extends State<MovieView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: Future.wait([movieFuture, videosFuture]),
+        future: movieDetailsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            movie = snapshot.data![0] as Movie;
-            final List<Video> videos = snapshot.data![1] as List<Video>;
+            movie = snapshot.data!.movie;
             String mediaOrigin = getMovieType(movie.mediaType);
             return CustomScrollView(
               slivers: [
@@ -172,7 +165,7 @@ class _MovieViewState extends State<MovieView> {
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: VideoList(
-                          videos: videos,
+                          videos: snapshot.data!.videos,
                         ),
                       ),
                     ],
