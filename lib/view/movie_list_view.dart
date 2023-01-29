@@ -10,6 +10,7 @@ import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
 
 import '../components/movie_item_list_component.dart';
+import '../components/trends_filter.dart';
 
 class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _MovieListViewState extends State<MovieListView> {
 
   late WebService webService;
   var search = "";
-  var choiceSelected = 999;
+  var category = "all";
   late Future<News> newsFuture;
   final List<Movie> movies = [];
   int page = 0;
@@ -35,21 +36,8 @@ class _MovieListViewState extends State<MovieListView> {
   void initState() {
     super.initState();
     webService = APIWebService();
-    newsFuture = webService.news(
-        filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
-    choiceSelected = 999;
+    newsFuture = webService.news(weekly: true);
     _mainScrollController.addListener(_onScroll);
-  }
-
-  String choiceSelectionKeyMap(int index) {
-    switch (index) {
-      case 0:
-        return "movie";
-      case 1:
-        return "tv";
-      default:
-        return "all";
-    }
   }
 
   void _onScroll() {
@@ -65,14 +53,16 @@ class _MovieListViewState extends State<MovieListView> {
     }
   }
 
-  Future<void> onSelectionChanged(int index) async {
-    movies.clear();
-    News news = await webService.news(
-        filter: choiceSelectionKeyMap(choiceSelected),
-        weekly: true,
-        page: 1);
+  _filterMovies(News news) {
     setState(() {
+      movies.clear();
       loadMovies(news);
+    });
+  }
+
+  _updateCategory(String category) {
+    setState(() {
+      this.category = category;
     });
   }
 
@@ -82,15 +72,13 @@ class _MovieListViewState extends State<MovieListView> {
     movies.addAll(news.results);
   }
 
-  Future<void> loadMoreMovies({String filter = "all"}) async {
+  Future<void> loadMoreMovies() async {
     if (!isLoading && page < totalPages) {
       setState(() {
         isLoading = true;
       });
-      News news = await webService.news(
-          filter: choiceSelectionKeyMap(choiceSelected),
-          weekly: true,
-          page: page + 1);
+      News news =
+          await webService.news(filter: category, weekly: true, page: page + 1);
       loadMovies(news);
       setState(() {
         isLoading = false;
@@ -108,11 +96,6 @@ class _MovieListViewState extends State<MovieListView> {
 
   @override
   Widget build(BuildContext context) {
-    var choiceList = [
-      AppLocalizations.of(context)!.movie,
-      AppLocalizations.of(context)!.tvShow
-    ];
-
     const Key centerKey = ValueKey<String>('movie-sliver-list');
     return CustomScrollView(
       controller: _mainScrollController,
@@ -134,34 +117,21 @@ class _MovieListViewState extends State<MovieListView> {
           ],
           flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-            // print('constraints=' + constraints.toString());
             return FlexibleSpaceBar(
-                centerTitle: true,
-                title: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    //opacity: top == MediaQuery.of(context).padding.top + kToolbarHeight ? 1.0 : 0.0,
-                    opacity: 1.0,
-                    child: Text(
-                      AppLocalizations.of(context)!.trends,
-                      style: const TextStyle(fontSize: 20.0),
-                    )),
-                background: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      for (int i = 0; i < choiceList.length; i++)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ChoiceChip(
-                            label: Text(choiceList[i]),
-                            selected: choiceSelected == i,
-                            onSelected: (bool selected) {
-                              choiceSelected = selected ? i : 999;
-                              onSelectionChanged(choiceSelected);
-                            },
-                            selectedColor: Colors.green,
-                          ),
-                        )
-                    ]));
+              centerTitle: true,
+              title: AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: 1.0,
+                child: Text(
+                  AppLocalizations.of(context)!.trends,
+                  style: const TextStyle(fontSize: 20.0),
+                ),
+              ),
+              background: TrendsFilter(
+                onFilterSelected: _filterMovies,
+                onCategorySelected: _updateCategory,
+              ),
+            );
           }),
         ),
         FutureBuilder<News>(
