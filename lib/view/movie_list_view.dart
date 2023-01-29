@@ -18,7 +18,6 @@ class MovieListView extends StatefulWidget {
   State<MovieListView> createState() => _MovieListViewState();
 }
 
-
 class _MovieListViewState extends State<MovieListView> {
   final SCROLL_LOADING_LIMIT = 200;
 
@@ -36,24 +35,23 @@ class _MovieListViewState extends State<MovieListView> {
   void initState() {
     super.initState();
     webService = APIWebService();
-    newsFuture = webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
+    newsFuture = webService.news(
+        filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
     choiceSelected = 999;
     _mainScrollController.addListener(_onScroll);
   }
+
   String choiceSelectionKeyMap(int index) {
-    print("index: $index");
     switch (index) {
       case 0:
-        print("movie");
         return "movie";
       case 1:
-        print("tv");
         return "tv";
       default:
-        print("all");
         return "all";
     }
   }
+
   void _onScroll() {
     if (page > 0 &&
         _mainScrollController.position.pixels >
@@ -67,19 +65,15 @@ class _MovieListViewState extends State<MovieListView> {
     }
   }
 
-  Future<void> onSelectionChanged(int index) async{
-    setState(()  {
-      choiceSelected = index;
-      search = "";
-      movies.clear();
-      page = 0;
-    });
-    News news = await webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true, page: page + 1);
-    print(news.results);
+  Future<void> onSelectionChanged(int index) async {
+    movies.clear();
+    News news = await webService.news(
+        filter: choiceSelectionKeyMap(choiceSelected),
+        weekly: true,
+        page: 1);
     setState(() {
       loadMovies(news);
     });
-
   }
 
   void loadMovies(News news) {
@@ -93,7 +87,10 @@ class _MovieListViewState extends State<MovieListView> {
       setState(() {
         isLoading = true;
       });
-      News news = await webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true, page: page + 1);
+      News news = await webService.news(
+          filter: choiceSelectionKeyMap(choiceSelected),
+          weekly: true,
+          page: page + 1);
       loadMovies(news);
       setState(() {
         isLoading = false;
@@ -112,8 +109,8 @@ class _MovieListViewState extends State<MovieListView> {
   @override
   Widget build(BuildContext context) {
     var choiceList = [
-        AppLocalizations.of(context)!.movie,
-        AppLocalizations.of(context)!.tvShow
+      AppLocalizations.of(context)!.movie,
+      AppLocalizations.of(context)!.tvShow
     ];
 
     const Key centerKey = ValueKey<String>('movie-sliver-list');
@@ -121,56 +118,51 @@ class _MovieListViewState extends State<MovieListView> {
       controller: _mainScrollController,
       slivers: <Widget>[
         SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            actions: [
-              IconButton(
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate: CustomSearchDelegate(),
-                  );
-                },
-                icon: const Icon(Icons.search),
-              ),
-            ],
-            flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  // print('constraints=' + constraints.toString());
-                  return FlexibleSpaceBar(
-                      centerTitle: true,
-                      title: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          //opacity: top == MediaQuery.of(context).padding.top + kToolbarHeight ? 1.0 : 0.0,
-                          opacity: 1.0,
-                          child: Text(
-                            AppLocalizations.of(context)!.trends,
-                            style: const TextStyle(fontSize: 20.0),
-                          )),
-                      background: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            for(int i=0; i < choiceList.length; i++)
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ChoiceChip(
-                                  label: Text(choiceList[i]),
-                                  selected: choiceSelected == i,
-                                  onSelected: (bool selected) {
-                                    setState(() {
-                                      choiceSelected = selected ? i : 999;
-                                      onSelectionChanged(choiceSelected);
-                                    });
-                                  },
-                                  selectedColor: Colors.green,
-                                ),
-                              )
-                            ]
-                          )
-                  );
-                }
+          expandedHeight: 200.0,
+          floating: false,
+          pinned: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(),
+                );
+              },
+              icon: const Icon(Icons.search),
             ),
+          ],
+          flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            // print('constraints=' + constraints.toString());
+            return FlexibleSpaceBar(
+                centerTitle: true,
+                title: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    //opacity: top == MediaQuery.of(context).padding.top + kToolbarHeight ? 1.0 : 0.0,
+                    opacity: 1.0,
+                    child: Text(
+                      AppLocalizations.of(context)!.trends,
+                      style: const TextStyle(fontSize: 20.0),
+                    )),
+                background: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      for (int i = 0; i < choiceList.length; i++)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ChoiceChip(
+                            label: Text(choiceList[i]),
+                            selected: choiceSelected == i,
+                            onSelected: (bool selected) {
+                              choiceSelected = selected ? i : 999;
+                              onSelectionChanged(choiceSelected);
+                            },
+                            selectedColor: Colors.green,
+                          ),
+                        )
+                    ]));
+          }),
         ),
         FutureBuilder<News>(
           future: newsFuture,
