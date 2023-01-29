@@ -18,12 +18,13 @@ class MovieListView extends StatefulWidget {
   State<MovieListView> createState() => _MovieListViewState();
 }
 
+
 class _MovieListViewState extends State<MovieListView> {
   final SCROLL_LOADING_LIMIT = 200;
 
   late WebService webService;
   var search = "";
-  var choiceSelected = -1;
+  var choiceSelected = 999;
   late Future<News> newsFuture;
   final List<Movie> movies = [];
   int page = 0;
@@ -36,16 +37,20 @@ class _MovieListViewState extends State<MovieListView> {
     super.initState();
     webService = APIWebService();
     newsFuture = webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
-    choiceSelected = -1;
+    choiceSelected = 999;
     _mainScrollController.addListener(_onScroll);
   }
   String choiceSelectionKeyMap(int index) {
+    print("index: $index");
     switch (index) {
       case 0:
+        print("movie");
         return "movie";
       case 1:
+        print("tv");
         return "tv";
       default:
+        print("all");
         return "all";
     }
   }
@@ -62,14 +67,19 @@ class _MovieListViewState extends State<MovieListView> {
     }
   }
 
-  void onSelectionChanged(int index) {
-    setState(() {
+  Future<void> onSelectionChanged(int index) async{
+    setState(()  {
       choiceSelected = index;
       search = "";
       movies.clear();
       page = 0;
-      newsFuture = webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
     });
+    News news = await webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true, page: page + 1);
+    print(news.results);
+    setState(() {
+      loadMovies(news);
+    });
+
   }
 
   void loadMovies(News news) {
@@ -78,12 +88,12 @@ class _MovieListViewState extends State<MovieListView> {
     movies.addAll(news.results);
   }
 
-  Future<void> loadMoreMovies() async {
+  Future<void> loadMoreMovies({String filter = "all"}) async {
     if (!isLoading && page < totalPages) {
       setState(() {
         isLoading = true;
       });
-      News news = await webService.news(weekly: true, page: page + 1);
+      News news = await webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true, page: page + 1);
       loadMovies(news);
       setState(() {
         isLoading = false;
@@ -141,7 +151,7 @@ class _MovieListViewState extends State<MovieListView> {
                       background: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            for(int i=0; i<choiceList.length; i++)
+                            for(int i=0; i < choiceList.length; i++)
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ChoiceChip(
@@ -149,7 +159,7 @@ class _MovieListViewState extends State<MovieListView> {
                                   selected: choiceSelected == i,
                                   onSelected: (bool selected) {
                                     setState(() {
-                                      choiceSelected = selected ? i : -1;
+                                      choiceSelected = selected ? i : 999;
                                       onSelectionChanged(choiceSelected);
                                     });
                                   },
