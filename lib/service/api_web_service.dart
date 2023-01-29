@@ -78,7 +78,7 @@ class APIWebService extends WebService {
         '${config.apiBaseURL}/search/multi?query=$search&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
       return NewsResponse.fromJson(
-          jsonDecode(response.body), config.baseImageAPIURL)
+              jsonDecode(response.body), config.baseImageAPIURL)
           .results;
     } else {
       throw Exception('Failed to search.');
@@ -86,10 +86,19 @@ class APIWebService extends WebService {
   }
 
   @override
-  Future<List<Video>> getVideos(String id) async {
+  Future<List<Video>> getMovieVideos(String id) async {
+    return getVideos(id, "movie");
+  }
+
+  @override
+  Future<List<Video>> getTvVideos(String id) async {
+    return getVideos(id, "tv");
+  }
+
+  Future<List<Video>> getVideos(String id, String type) async {
     Config config = await getConfig();
     final response = await http.get(Uri.parse(
-        '${config.apiBaseURL}/movie/$id/videos?api_key=${config.apiKey}'));
+        '${config.apiBaseURL}/$type/$id/videos?api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
       return VideosResponse.fromJson(jsonDecode(response.body))
           .results

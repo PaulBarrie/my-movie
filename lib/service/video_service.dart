@@ -11,8 +11,13 @@ class VideoService {
 
   WebService get _webService => APIWebService();
 
-  Future<List<Video>> getVideos(String id) async {
-    List<Video> videos = await _webService.getVideos(id);
+  Future<List<Video>> getMovieVideos(String id) async {
+    List<Video> videos = await _webService.getMovieVideos(id);
+    return videos.where((video) => video.site == "YouTube").toList();
+  }
+
+  Future<List<Video>> getTvVideos(String id) async {
+    List<Video> videos = await _webService.getTvVideos(id);
     return videos.where((video) => video.site == "YouTube").toList();
   }
 }

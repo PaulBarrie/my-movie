@@ -11,5 +11,7 @@ abstract class WebService {
 
   Future<Movie> getTv(String id);
 
-  Future<List<Video>> getVideos(String id);
+  Future<List<Video>> getMovieVideos(String id);
+
+  Future<List<Video>> getTvVideos(String id);
 }

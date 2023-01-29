@@ -9,10 +9,15 @@ class MovieService {
   Future<MovieDetails> getMovieDetails(String id, String mediaType) async {
     final WebService webService = APIWebService();
     final VideoService videoService = VideoService();
-    final Movie movie = mediaType == "movie"
-        ? await webService.getMovie(id)
-        : await webService.getTv(id);
-    final List<Video> videos = await videoService.getVideos(id);
+    Movie movie;
+    List<Video> videos;
+    if (mediaType == "movie") {
+      movie = await webService.getMovie(id);
+      videos = await videoService.getMovieVideos(id);
+    } else {
+      movie = await webService.getTv(id);
+      videos = await videoService.getTvVideos(id);
+    }
     return MovieDetails(movie, videos);
   }
 }
