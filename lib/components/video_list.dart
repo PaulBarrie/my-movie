@@ -16,14 +16,16 @@ class VideoList extends StatefulWidget {
 class _VideoListState extends State<VideoList> {
   bool allDisplayed = false;
 
+  get videos => widget.videos;
+
   List<Widget> _getVideoList(BuildContext context) {
     List<Widget> videoList = [];
-    for (int i = 0; i < widget.videos.length; i++) {
+    for (int i = 0; i < videos.length; i++) {
       if (i < 3 || allDisplayed) {
-        videoList.add(_getVideoItem(widget.videos[i], context));
+        videoList.add(_getVideoItem(videos[i], context));
       }
     }
-    if (videoList.length == 3 && !allDisplayed) {
+    if (videos.length > 3 && !allDisplayed) {
       videoList.add(_getSeeAllButton());
     }
     return videoList;
@@ -74,7 +76,7 @@ class _VideoListState extends State<VideoList> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.videos.isEmpty) {
+    if (videos.isEmpty) {
       return const EmptyWidget();
     }
     return Container(
