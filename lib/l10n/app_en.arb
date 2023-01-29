@@ -1,6 +1,7 @@
 {
   "appName": "Scavie",
   "search": "Search",
+  "searchSentence": "Search for a movie or a serie",
   "votes": "votes",
   "movie": "Movie",
   "movies": "Movies",

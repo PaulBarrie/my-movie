@@ -23,6 +23,7 @@ class _MovieListViewState extends State<MovieListView> {
 
   late WebService webService;
   var search = "";
+  var choiceSelected = -1;
   late Future<News> newsFuture;
   final List<Movie> movies = [];
   int page = 0;
@@ -34,10 +35,20 @@ class _MovieListViewState extends State<MovieListView> {
   void initState() {
     super.initState();
     webService = APIWebService();
-    newsFuture = webService.news(weekly: true);
+    newsFuture = webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
+    choiceSelected = -1;
     _mainScrollController.addListener(_onScroll);
   }
-
+  String choiceSelectionKeyMap(int index) {
+    switch (index) {
+      case 0:
+        return "movie";
+      case 1:
+        return "tv";
+      default:
+        return "all";
+    }
+  }
   void _onScroll() {
     if (page > 0 &&
         _mainScrollController.position.pixels >
@@ -49,6 +60,16 @@ class _MovieListViewState extends State<MovieListView> {
         });
       }
     }
+  }
+
+  void onSelectionChanged(int index) {
+    setState(() {
+      choiceSelected = index;
+      search = "";
+      movies.clear();
+      page = 0;
+      newsFuture = webService.news(filter: choiceSelectionKeyMap(choiceSelected), weekly: true);
+    });
   }
 
   void loadMovies(News news) {
@@ -80,27 +101,66 @@ class _MovieListViewState extends State<MovieListView> {
 
   @override
   Widget build(BuildContext context) {
+    var choiceList = [
+        AppLocalizations.of(context)!.movie,
+        AppLocalizations.of(context)!.tvShow
+    ];
+
     const Key centerKey = ValueKey<String>('movie-sliver-list');
     return CustomScrollView(
       controller: _mainScrollController,
       slivers: <Widget>[
         SliverAppBar(
-          pinned: true,
-          expandedHeight: 250.0,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(AppLocalizations.of(context)!.trends),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: CustomSearchDelegate(),
-                );
-              },
-              icon: const Icon(Icons.search),
-            )
-          ],
+            expandedHeight: 200.0,
+            floating: false,
+            pinned: true,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: CustomSearchDelegate(),
+                  );
+                },
+                icon: const Icon(Icons.search),
+              ),
+            ],
+            flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  // print('constraints=' + constraints.toString());
+                  return FlexibleSpaceBar(
+                      centerTitle: true,
+                      title: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          //opacity: top == MediaQuery.of(context).padding.top + kToolbarHeight ? 1.0 : 0.0,
+                          opacity: 1.0,
+                          child: Text(
+                            AppLocalizations.of(context)!.trends,
+                            style: const TextStyle(fontSize: 20.0),
+                          )),
+                      background: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            for(int i=0; i<choiceList.length; i++)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ChoiceChip(
+                                  label: Text(choiceList[i]),
+                                  selected: choiceSelected == i,
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      choiceSelected = selected ? i : -1;
+                                      onSelectionChanged(choiceSelected);
+                                    });
+                                  },
+                                  selectedColor: Colors.green,
+                                ),
+                              )
+                            ]
+                          )
+                  );
+                }
+            ),
         ),
         FutureBuilder<News>(
           future: newsFuture,

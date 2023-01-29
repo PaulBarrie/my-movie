@@ -28,11 +28,11 @@ class APIWebService extends WebService {
   }
 
   @override
-  Future<News> news({int page = 1, bool weekly = true}) async {
+  Future<News> news({int page = 1, filter = "all", bool weekly = true}) async {
     Config config = await getConfig();
     String frequency = weekly ? "week" : "day";
     final response = await http.get(Uri.parse(
-        '${config.apiBaseURL}/trending/all/$frequency?page=$page&api_key=${config.apiKey}'));
+        '${config.apiBaseURL}/trending/$filter/$frequency?page=$page&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
       NewsResponse newsResponse = NewsResponse.fromJson(
           jsonDecode(response.body), config.baseImageAPIURL);
@@ -75,7 +75,7 @@ class APIWebService extends WebService {
         '${config.apiBaseURL}/search/multi?query=$search&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
       return NewsResponse.fromJson(
-              jsonDecode(response.body), config.baseImageAPIURL)
+          jsonDecode(response.body), config.baseImageAPIURL)
           .results;
     } else {
       throw Exception('Failed to search.');

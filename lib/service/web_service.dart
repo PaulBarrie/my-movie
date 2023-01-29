@@ -5,7 +5,7 @@ import 'package:my_movie/domain/video.dart';
 abstract class WebService {
   Future<List<Movie>> search(String search);
 
-  Future<News> news({int page = 1, bool weekly = true});
+  Future<News> news({int page = 1, filter = "all", bool weekly = true});
 
   Future<Movie> getMovie(String id);
 
