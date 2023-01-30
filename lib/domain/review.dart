@@ -29,7 +29,7 @@ class Review {
     if (image == null) {
       return null;
     }
-    if(image.startsWith("/http")) {
+    if (image.startsWith("/http")) {
       return image.substring(1);
     }
     return baseImageUrl + image;

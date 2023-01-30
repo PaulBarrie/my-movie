@@ -8,7 +8,7 @@ import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
-  final WebService webService = APIWebService();
+  final WebService _webService = APIWebService();
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -17,7 +17,9 @@ class CustomSearchDelegate extends SearchDelegate {
         onPressed: () {
           query = '';
         },
-        icon: const Icon(Icons.clear),
+        icon: const Icon(
+          Icons.clear,
+        ),
       ),
     ];
   }
@@ -35,7 +37,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return FutureBuilder(
-      future: webService.search(query),
+      future: _webService.search(query),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
@@ -61,7 +63,7 @@ class CustomSearchDelegate extends SearchDelegate {
       return const EmptyWidget();
     } else {
       return FutureBuilder<List<Movie>>(
-        future: webService.search(query),
+        future: _webService.search(query),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(

@@ -14,14 +14,14 @@ class FavouritesView extends StatefulWidget {
 }
 
 class _FavouritesViewState extends State<FavouritesView> {
-  late FavouriteService favouriteService;
-  late Future<List<MoviePreview>> moviePreviewListFuture;
+  late FavouriteService _favouriteService;
+  late Future<List<MoviePreview>> _moviePreviewListFuture;
 
   @override
   void initState() {
     super.initState();
-    favouriteService = DatabaseFavouriteService();
-    moviePreviewListFuture = favouriteService.getFavourites();
+    _favouriteService = DatabaseFavouriteService();
+    _moviePreviewListFuture = _favouriteService.getFavourites();
   }
 
   @override
@@ -31,7 +31,7 @@ class _FavouritesViewState extends State<FavouritesView> {
         title: Text(AppLocalizations.of(context)!.favourites),
       ),
       body: FutureBuilder<List<MoviePreview>>(
-        future: moviePreviewListFuture,
+        future: _moviePreviewListFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {

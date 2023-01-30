@@ -21,26 +21,28 @@ class MovieView extends StatefulWidget {
 }
 
 class _MovieViewState extends State<MovieView> {
-  MoviePreview get moviePreview => widget.moviePreview;
+  MoviePreview get _moviePreview => widget.moviePreview;
 
-  late Movie movie;
-  late FavouriteService favouriteService;
-  late Future<MovieDetails> movieDetailsFuture;
-  late bool isFavourite = false;
+  late Movie _movie;
+  late FavouriteService _favouriteService;
+  late Future<MovieDetails> _movieDetailsFuture;
+  bool _isFavourite = false;
 
   @override
   void initState() {
     super.initState();
-    favouriteService = DatabaseFavouriteService();
+    _favouriteService = DatabaseFavouriteService();
     final MovieService movieService = MovieService();
-    movieDetailsFuture =
-        movieService.getMovieDetails(moviePreview.id, moviePreview.mediaType);
-    favouriteService.isFavourite(moviePreview.id).then((value) => setState(() {
-          isFavourite = value;
-        }));
+    _movieDetailsFuture =
+        movieService.getMovieDetails(_moviePreview.id, _moviePreview.mediaType);
+    _favouriteService
+        .isFavourite(_moviePreview.id)
+        .then((value) => setState(() {
+              _isFavourite = value;
+            }));
   }
 
-  String getMovieType(String mediaType) {
+  String _getMovieType(String mediaType) {
     return mediaType == "tv"
         ? AppLocalizations.of(context)!.tvShow
         : mediaType == "movie"
@@ -48,15 +50,15 @@ class _MovieViewState extends State<MovieView> {
             : AppLocalizations.of(context)!.series;
   }
 
-  void handleOnFavorite() async {
-    await favouriteService.toggleFavourite(movie);
+  void _handleOnFavorite() async {
+    await _favouriteService.toggleFavourite(_movie);
     setState(() {
-      isFavourite = !isFavourite;
+      _isFavourite = !_isFavourite;
     });
   }
 
-  String getFavouriteButtonText() {
-    return isFavourite
+  String _getFavouriteButtonText() {
+    return _isFavourite
         ? AppLocalizations.of(context)!.removeFromFavourites
         : AppLocalizations.of(context)!.addToFavourites;
   }
@@ -78,11 +80,11 @@ class _MovieViewState extends State<MovieView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: movieDetailsFuture,
+        future: _movieDetailsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            movie = snapshot.data!.movie;
-            String mediaOrigin = getMovieType(movie.mediaType);
+            _movie = snapshot.data!.movie;
+            String mediaOrigin = _getMovieType(_movie.mediaType);
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -91,11 +93,11 @@ class _MovieViewState extends State<MovieView> {
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     title: Text(
-                      movie.title,
+                      _movie.title,
                     ),
                     background: Stack(
                       children: [
-                        _getPoster(movie),
+                        _getPoster(_movie),
                         Container(
                           decoration: const BoxDecoration(
                             gradient: LinearGradient(
@@ -122,10 +124,10 @@ class _MovieViewState extends State<MovieView> {
                         ),
                         child: Center(
                           child: MovieDetailGrade(
-                            votes: movie.voteCount,
-                            grade: (moviePreview.averageGrade / 2).round(),
-                            category: movie.mediaType,
-                            id: movie.id,
+                            votes: _movie.voteCount,
+                            grade: (_moviePreview.averageGrade / 2).round(),
+                            category: _movie.mediaType,
+                            id: _movie.id,
                           ),
                         ),
                       ),
@@ -139,13 +141,13 @@ class _MovieViewState extends State<MovieView> {
                               style: Theme.of(context).textTheme.displaySmall,
                             ),
                             ElevatedButton(
-                              onPressed: handleOnFavorite,
+                              onPressed: _handleOnFavorite,
                               style: TextButton.styleFrom(
                                   backgroundColor: Theme.of(context)
                                       .colorScheme
                                       .secondary // Text Color
                                   ),
-                              child: Text(getFavouriteButtonText()),
+                              child: Text(_getFavouriteButtonText()),
                             ),
                           ],
                         ),
@@ -160,7 +162,7 @@ class _MovieViewState extends State<MovieView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          movie.overview,
+                          _movie.overview,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),

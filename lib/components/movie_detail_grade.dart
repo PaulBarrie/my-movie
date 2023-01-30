@@ -11,13 +11,13 @@ class MovieDetailGrade extends StatelessWidget {
   final String category;
   final String id;
 
-  const MovieDetailGrade(
-      {Key? key,
-      required this.votes,
-      required this.grade,
-      required this.category,
-      required this.id})
-      : super(key: key);
+  const MovieDetailGrade({
+    Key? key,
+    required this.votes,
+    required this.grade,
+    required this.category,
+    required this.id,
+  }) : super(key: key);
 
   String _getSentence(BuildContext context) {
     String votesText = NumberFormat().format(votes);

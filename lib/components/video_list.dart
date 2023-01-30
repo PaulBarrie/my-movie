@@ -14,7 +14,7 @@ class VideoList extends StatefulWidget {
 }
 
 class _VideoListState extends State<VideoList> {
-  bool allDisplayed = false;
+  var allDisplayed = false;
 
   get videos => widget.videos;
 

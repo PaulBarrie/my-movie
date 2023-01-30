@@ -22,76 +22,76 @@ class ReviewsView extends StatefulWidget {
 class _ReviewsViewState extends State<ReviewsView> {
   static const SCROLL_LOADING_LIMIT = 200;
 
-  get category => widget.category;
+  get _category => widget.category;
 
-  get id => widget.id;
+  get _id => widget.id;
 
-  late Future<Reviews> reviewsFuture;
-  late WebService webService;
-  final List<Review> reviews = [];
-  int page = 0;
-  late int totalPages;
-  bool isLoading = false;
+  late Future<Reviews> _reviewsFuture;
+  late WebService _webService;
+  final List<Review> _reviews = [];
+  int _page = 0;
+  late int _totalPages;
+  bool _isLoading = false;
   final _mainScrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    webService = APIWebService();
-    if (category == "movie") {
-      reviewsFuture = webService.getMovieReviews(id: id);
+    _webService = APIWebService();
+    if (_category == "movie") {
+      _reviewsFuture = _webService.getMovieReviews(id: _id);
     } else {
-      reviewsFuture = webService.getTvReviews(id: id);
+      _reviewsFuture = _webService.getTvReviews(id: _id);
     }
     _mainScrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    if (page > 0 &&
+    if (_page > 0 &&
         _mainScrollController.position.pixels >
             _mainScrollController.position.maxScrollExtent -
                 SCROLL_LOADING_LIMIT) {
-      if (page < totalPages) {
+      if (_page < _totalPages) {
         setState(() {
-          loadMoreReviews();
+          _loadMoreReviews();
         });
       }
     }
   }
 
-  Future<void> loadMoreReviews() async {
-    if (!isLoading && page < totalPages) {
+  Future<void> _loadMoreReviews() async {
+    if (!_isLoading && _page < _totalPages) {
       setState(() {
-        isLoading = true;
+        _isLoading = true;
       });
       Reviews reviews;
-      if (category == "movie") {
-        reviews = await webService.getMovieReviews(id: id, page: page + 1);
+      if (_category == "movie") {
+        reviews = await _webService.getMovieReviews(id: _id, page: _page + 1);
       } else {
-        reviews = await webService.getTvReviews(id: id, page: page + 1);
+        reviews = await _webService.getTvReviews(id: _id, page: _page + 1);
       }
-      loadReviews(reviews);
+      _loadReviews(reviews);
       setState(() {
-        isLoading = false;
+        _isLoading = false;
       });
     }
   }
 
-  void loadReviews(Reviews reviews) {
-    page = reviews.page;
-    totalPages = reviews.totalPages;
-    this.reviews.addAll(reviews.results);
+  void _loadReviews(Reviews reviews) {
+    _page = reviews.page;
+    _totalPages = reviews.totalPages;
+    _reviews.addAll(reviews.results);
   }
 
-  Widget getLoadComponent() {
-    if (isLoading) {
+  Widget _getLoadComponent() {
+    if (_isLoading) {
       return const CustomProgressIndicator();
     } else {
       return const EmptyWidget();
     }
   }
 
-  Widget? getLeading(String? imageUrl) {
+  Widget? _getLeading(String? imageUrl) {
     if (imageUrl != null) {
       return CircleAvatar(
         backgroundImage: NetworkImage(imageUrl),
@@ -102,7 +102,7 @@ class _ReviewsViewState extends State<ReviewsView> {
   }
 
   //
-  Widget getReviewTitle(String title, double? rating) {
+  Widget _getReviewTitle(String title, double? rating) {
     if (rating != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,27 +123,27 @@ class _ReviewsViewState extends State<ReviewsView> {
         title: Text(AppLocalizations.of(context)!.reviews),
       ),
       body: FutureBuilder<Reviews>(
-        future: reviewsFuture,
+        future: _reviewsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (page == 0) {
-              loadReviews(snapshot.data!);
+            if (_page == 0) {
+              _loadReviews(snapshot.data!);
             }
             return ListView.separated(
               controller: _mainScrollController,
-              itemCount: reviews.length + 1,
+              itemCount: _reviews.length + 1,
               itemBuilder: (context, index) {
-                if (index < reviews.length) {
+                if (index < _reviews.length) {
                   return ListTile(
-                    leading: getLeading(reviews[index].image),
-                    title: getReviewTitle(
-                      reviews[index].username,
-                      reviews[index].rating,
+                    leading: _getLeading(_reviews[index].image),
+                    title: _getReviewTitle(
+                      _reviews[index].username,
+                      _reviews[index].rating,
                     ),
-                    subtitle: Text(reviews[index].content),
+                    subtitle: Text(_reviews[index].content),
                   );
                 } else {
-                  return getLoadComponent();
+                  return _getLoadComponent();
                 }
               },
               separatorBuilder: (context, index) {

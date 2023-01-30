@@ -20,74 +20,73 @@ class MovieListView extends StatefulWidget {
 }
 
 class _MovieListViewState extends State<MovieListView> {
-  static const SCROLL_LOADING_LIMIT = 200;
+  static const _SCROLL_LOADING_LIMIT = 200;
 
-  late WebService webService;
-  var search = "";
-  var category = "all";
-  late Future<News> newsFuture;
-  final List<Movie> movies = [];
-  int page = 0;
-  late int totalPages;
-  bool isLoading = false;
+  late WebService _webService;
+  var _category = "all";
+  late Future<News> _newsFuture;
+  final List<Movie> _movies = [];
+  int _page = 0;
+  late int _totalPages;
+  bool _isLoading = false;
   final _mainScrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    webService = APIWebService();
-    newsFuture = webService.news(weekly: true);
+    _webService = APIWebService();
+    _newsFuture = _webService.news(weekly: true);
     _mainScrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    if (page > 0 &&
+    if (_page > 0 &&
         _mainScrollController.position.pixels >
             _mainScrollController.position.maxScrollExtent -
-                SCROLL_LOADING_LIMIT) {
-      if (page < totalPages) {
+                _SCROLL_LOADING_LIMIT) {
+      if (_page < _totalPages) {
         setState(() {
-          loadMoreMovies();
+          _loadMoreMovies();
         });
       }
     }
   }
 
-  _filterMovies(News news) {
+  void _filterMovies(News news) {
     setState(() {
-      movies.clear();
-      loadMovies(news);
+      _movies.clear();
+      _loadMovies(news);
     });
   }
 
-  _updateCategory(String category) {
+  void _updateCategory(String category) {
     setState(() {
-      this.category = category;
+      _category = category;
     });
   }
 
-  void loadMovies(News news) {
-    page = news.page;
-    totalPages = news.totalPages;
-    movies.addAll(news.results);
+  void _loadMovies(News news) {
+    _page = news.page;
+    _totalPages = news.totalPages;
+    _movies.addAll(news.results);
   }
 
-  Future<void> loadMoreMovies() async {
-    if (!isLoading && page < totalPages) {
+  Future<void> _loadMoreMovies() async {
+    if (!_isLoading && _page < _totalPages) {
       setState(() {
-        isLoading = true;
+        _isLoading = true;
       });
-      News news =
-          await webService.news(filter: category, weekly: true, page: page + 1);
-      loadMovies(news);
+      News news = await _webService.news(
+          filter: _category, weekly: true, page: _page + 1);
+      _loadMovies(news);
       setState(() {
-        isLoading = false;
+        _isLoading = false;
       });
     }
   }
 
-  Widget getLoadComponent() {
-    if (isLoading) {
+  Widget _getLoadComponent() {
+    if (_isLoading) {
       return const CustomProgressIndicator();
     } else {
       return const EmptyWidget();
@@ -96,7 +95,6 @@ class _MovieListViewState extends State<MovieListView> {
 
   @override
   Widget build(BuildContext context) {
-    const Key centerKey = ValueKey<String>('movie-sliver-list');
     return CustomScrollView(
       controller: _mainScrollController,
       slivers: <Widget>[
@@ -135,26 +133,25 @@ class _MovieListViewState extends State<MovieListView> {
           }),
         ),
         FutureBuilder<News>(
-          future: newsFuture,
+          future: _newsFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (page == 0) {
-                loadMovies(snapshot.data!);
+              if (_page == 0) {
+                _loadMovies(snapshot.data!);
               }
               return SliverList(
-                key: centerKey,
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    if (index < movies.length) {
+                    if (index < _movies.length) {
                       return MovieItemListComponent(
-                        moviePreview: MoviePreview.fromMovie(movies[index]),
+                        moviePreview: MoviePreview.fromMovie(_movies[index]),
                       );
                     }
                     return Center(
-                      child: getLoadComponent(),
+                      child: _getLoadComponent(),
                     );
                   },
-                  childCount: movies.length + 1,
+                  childCount: _movies.length + 1,
                 ),
               );
             } else if (snapshot.hasError) {

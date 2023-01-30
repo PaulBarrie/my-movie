@@ -25,15 +25,13 @@ class APIWebService extends WebService {
   Future<Config> getConfig() async {
     Config config = Config();
     await config.load();
-    return Future(() => config.get());
+    return config;
   }
 
   @override
   Future<News> news({int page = 1, filter = "all", bool weekly = true}) async {
     Config config = await getConfig();
     String frequency = weekly ? "week" : "day";
-    print(
-        '${config.apiBaseURL}/trending/$filter/$frequency?page=$page&api_key=${config.apiKey}');
     final response = await http.get(Uri.parse(
         '${config.apiBaseURL}/trending/$filter/$frequency?page=$page&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
@@ -41,8 +39,6 @@ class APIWebService extends WebService {
           jsonDecode(response.body), config.baseImageAPIURL);
       return NewsMapper.fromDTO(newsResponse);
     } else {
-      print("Error: ${response.statusCode}");
-      print("Error: ${response.body}");
       throw Exception('Failed to load favorites movies.');
     }
   }

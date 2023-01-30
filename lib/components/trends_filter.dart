@@ -9,9 +9,11 @@ class TrendsFilter extends StatefulWidget {
   final Function(News) onFilterSelected;
   final Function(String) onCategorySelected;
 
-  const TrendsFilter(
-      {Key? key, required this.onFilterSelected, required this.onCategorySelected})
-      : super(key: key);
+  const TrendsFilter({
+    Key? key,
+    required this.onFilterSelected,
+    required this.onCategorySelected,
+  }) : super(key: key);
 
   @override
   State<TrendsFilter> createState() => _TrendsFilterState();
@@ -27,16 +29,16 @@ class _TrendsFilterState extends State<TrendsFilter> {
     webService = APIWebService();
   }
 
-  _onSelected(bool isSelected) {
+  void _onSelected(bool isSelected) {
     if (!isSelected) {
       setState(() {
         choiceSelected = -1;
       });
     }
-    onSelectionChanged();
+    _onSelectionChanged();
   }
 
-  String choiceSelectionKeyMap(int index) {
+  String _getCategory(int index) {
     switch (index) {
       case 0:
         return "movie";
@@ -47,8 +49,8 @@ class _TrendsFilterState extends State<TrendsFilter> {
     }
   }
 
-  Future<void> onSelectionChanged() async {
-    String category = choiceSelectionKeyMap(choiceSelected);
+  Future<void> _onSelectionChanged() async {
+    String category = _getCategory(choiceSelected);
     News news = await webService.news(
       filter: category,
       weekly: true,
@@ -80,7 +82,7 @@ class _TrendsFilterState extends State<TrendsFilter> {
               },
               selectedColor: Colors.green,
             ),
-          )
+          ),
       ],
     );
   }
