@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/news.dart';
+import 'package:my_movie/domain/reviews.dart';
 import 'package:my_movie/domain/video.dart';
 import 'package:my_movie/kernel/config.dart';
 import 'package:my_movie/mapper/news_mapper.dart';
@@ -31,7 +32,8 @@ class APIWebService extends WebService {
   Future<News> news({int page = 1, filter = "all", bool weekly = true}) async {
     Config config = await getConfig();
     String frequency = weekly ? "week" : "day";
-    print('${config.apiBaseURL}/trending/$filter/$frequency?page=$page&api_key=${config.apiKey}');
+    print(
+        '${config.apiBaseURL}/trending/$filter/$frequency?page=$page&api_key=${config.apiKey}');
     final response = await http.get(Uri.parse(
         '${config.apiBaseURL}/trending/$filter/$frequency?page=$page&api_key=${config.apiKey}'));
     if (response.statusCode == 200) {
@@ -87,15 +89,15 @@ class APIWebService extends WebService {
 
   @override
   Future<List<Video>> getMovieVideos(String id) async {
-    return getVideos(id, "movie");
+    return _getVideos(id, "movie");
   }
 
   @override
   Future<List<Video>> getTvVideos(String id) async {
-    return getVideos(id, "tv");
+    return _getVideos(id, "tv");
   }
 
-  Future<List<Video>> getVideos(String id, String type) async {
+  Future<List<Video>> _getVideos(String id, String type) async {
     Config config = await getConfig();
     final response = await http.get(Uri.parse(
         '${config.apiBaseURL}/$type/$id/videos?api_key=${config.apiKey}'));
@@ -106,6 +108,28 @@ class APIWebService extends WebService {
           .toList();
     } else {
       throw Exception('Failed to load videos.');
+    }
+  }
+
+  @override
+  Future<Reviews> getMovieReviews({required String id, int page = 1}) {
+    return _getReviews(id, "movie", page);
+  }
+
+  @override
+  Future<Reviews> getTvReviews({required String id, int page = 1}) {
+    return _getReviews(id, "tv", page);
+  }
+
+  Future<Reviews> _getReviews(String id, String type, int page) async {
+    Config config = await getConfig();
+    final response = await http.get(Uri.parse(
+        '${config.apiBaseURL}/$type/$id/reviews?page=$page&api_key=${config.apiKey}'));
+    if (response.statusCode == 200) {
+      return Reviews.fromJson(
+          jsonDecode(response.body), config.baseImageAPIURL);
+    } else {
+      throw Exception('Failed to load reviews.');
     }
   }
 }

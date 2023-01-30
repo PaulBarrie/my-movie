@@ -20,7 +20,7 @@ class MovieListView extends StatefulWidget {
 }
 
 class _MovieListViewState extends State<MovieListView> {
-  final SCROLL_LOADING_LIMIT = 200;
+  static const SCROLL_LOADING_LIMIT = 200;
 
   late WebService webService;
   var search = "";

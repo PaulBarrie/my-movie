@@ -124,6 +124,8 @@ class _MovieViewState extends State<MovieView> {
                           child: MovieDetailGrade(
                             votes: movie.voteCount,
                             grade: (moviePreview.averageGrade / 2).round(),
+                            category: movie.mediaType,
+                            id: movie.id,
                           ),
                         ),
                       ),
@@ -134,7 +136,7 @@ class _MovieViewState extends State<MovieView> {
                           children: [
                             Text(
                               mediaOrigin,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                             ElevatedButton(
                               onPressed: handleOnFavorite,
@@ -152,14 +154,14 @@ class _MovieViewState extends State<MovieView> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "Synopsis",
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           movie.overview,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                       Padding(

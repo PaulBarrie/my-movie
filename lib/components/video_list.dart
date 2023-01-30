@@ -40,11 +40,11 @@ class _VideoListState extends State<VideoList> {
       ),
       title: Text(
         video.name,
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
       subtitle: Text(
         video.type,
-        style: Theme.of(context).textTheme.subtitle2,
+        style: Theme.of(context).textTheme.titleSmall,
       ),
     );
   }

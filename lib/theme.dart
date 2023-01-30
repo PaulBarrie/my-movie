@@ -5,33 +5,33 @@ const Color secondaryColor = Color(0xFF66A182);
 
 final ThemeData appTheme = ThemeData(
   textTheme: const TextTheme(
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontSize: 40,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
-    headline3: TextStyle(
+    displaySmall: TextStyle(
       fontSize: 20,
       color: primaryColor,
       fontWeight: FontWeight.bold,
     ),
-    headline4: TextStyle(
+    headlineMedium: TextStyle(
       fontSize: 18,
       color: primaryColor,
       fontWeight: FontWeight.bold,
       fontStyle: FontStyle.italic,
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontSize: 16,
       color: primaryColor,
       fontWeight: FontWeight.w400,
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontSize: 16,
       color: Colors.white,
       fontWeight: FontWeight.w400,
     ),
-    subtitle2: TextStyle(
+    titleSmall: TextStyle(
       fontSize: 14,
       color: Colors.grey,
       fontWeight: FontWeight.w300,
