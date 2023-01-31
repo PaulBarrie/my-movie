@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/grade_star.dart';
 import 'package:my_movie/domain/movie_preview.dart';
-
-import '../view/movie_view.dart';
+import 'package:my_movie/view/movie_view.dart';
 
 class MovieItemListComponent extends StatefulWidget {
   final MoviePreview moviePreview;

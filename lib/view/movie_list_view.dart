@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/components/an_error_occurred.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/custom_search_delegate.dart';
 import 'package:my_movie/components/empty_widget.dart';
+import 'package:my_movie/components/movie_item_list_component.dart';
+import 'package:my_movie/components/trends_filter.dart';
 import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 import 'package:my_movie/domain/news.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
-
-import '../components/an_error_occurred.dart';
-import '../components/movie_item_list_component.dart';
-import '../components/trends_filter.dart';
 
 class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);

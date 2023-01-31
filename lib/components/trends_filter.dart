@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/domain/news.dart';
-
-import '../service/api_web_service.dart';
-import '../service/web_service.dart';
+import 'package:my_movie/service/api_web_service.dart';
+import 'package:my_movie/service/web_service.dart';
 
 class TrendsFilter extends StatefulWidget {
   final Function(News) onFilterSelected;

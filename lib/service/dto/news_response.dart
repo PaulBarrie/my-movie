@@ -1,4 +1,4 @@
-import '../../domain/movie.dart';
+import 'package:my_movie/domain/movie.dart';
 
 class NewsResponse {
   final int page;

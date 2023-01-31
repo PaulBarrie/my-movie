@@ -1,6 +1,5 @@
+import 'package:my_movie/domain/movie.dart';
 import 'package:my_movie/domain/movie_preview.dart';
-
-import '../domain/movie.dart';
 
 abstract class FavouriteService {
   Future<List<MoviePreview>> getFavourites();

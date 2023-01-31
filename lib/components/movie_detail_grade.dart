@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:my_movie/components/grade_star.dart';
-
-import '../view/reviews_view.dart';
+import 'package:my_movie/view/reviews_view.dart';
 
 class MovieDetailGrade extends StatelessWidget {
   final int votes;
