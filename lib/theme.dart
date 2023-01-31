@@ -26,11 +26,6 @@ final ThemeData appTheme = ThemeData(
       color: primaryColor,
       fontWeight: FontWeight.w400,
     ),
-    bodyMedium: TextStyle(
-      fontSize: 16,
-      color: Colors.white,
-      fontWeight: FontWeight.w400,
-    ),
     titleSmall: TextStyle(
       fontSize: 14,
       color: Colors.grey,

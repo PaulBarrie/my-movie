@@ -40,7 +40,9 @@ class _VideoListState extends State<VideoList> {
       ),
       title: Text(
         video.name,
-        style: Theme.of(context).textTheme.bodyMedium,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
       ),
       subtitle: Text(
         video.type,

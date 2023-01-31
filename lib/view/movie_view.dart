@@ -89,7 +89,7 @@ class _MovieViewState extends State<MovieView> {
               slivers: [
                 SliverAppBar(
                   pinned: true,
-                  expandedHeight: 250.0,
+                  expandedHeight: 400.0,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     title: Text(

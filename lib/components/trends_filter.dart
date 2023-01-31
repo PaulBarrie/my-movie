@@ -80,7 +80,7 @@ class _TrendsFilterState extends State<TrendsFilter> {
                 choiceSelected = i;
                 _onSelected(selected);
               },
-              selectedColor: Colors.green,
+              selectedColor: Theme.of(context).colorScheme.secondary,
             ),
           ),
       ],

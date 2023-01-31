@@ -36,7 +36,10 @@ class _FavouritesViewState extends State<FavouritesView> {
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
               return Center(
-                child: Text(AppLocalizations.of(context)!.noFavourites),
+                child: Text(
+                  AppLocalizations.of(context)!.noFavourites,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
               );
             } else {
               return ListView.builder(
