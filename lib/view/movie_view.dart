@@ -95,6 +95,7 @@ class _MovieViewState extends State<MovieView> {
                     centerTitle: true,
                     title: Text(
                       _movie.title,
+                      textAlign: TextAlign.center,
                     ),
                     background: Stack(
                       children: [

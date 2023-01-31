@@ -16,5 +16,6 @@
   "reviews": "Reviews",
   "anErrorOccurred": "Oops, An error occurred !",
   "tryAgainLater": "Try again later",
-  "goBack": "Go back"
+  "goBack": "Go back",
+  "noReviews": "No reviews"
 }

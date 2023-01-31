@@ -130,6 +130,14 @@ class _ReviewsViewState extends State<ReviewsView> {
             if (_page == 0) {
               _loadReviews(snapshot.data!);
             }
+            if (snapshot.data!.results.isEmpty) {
+              return Center(
+                child: Text(
+                  AppLocalizations.of(context)!.noReviews,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              );
+            }
             return ListView.separated(
               controller: _mainScrollController,
               itemCount: _reviews.length + 1,

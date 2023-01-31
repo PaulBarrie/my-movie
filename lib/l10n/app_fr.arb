@@ -16,5 +16,6 @@
   "reviews": "Avis",
   "anErrorOccurred": "Une erreur est survenue",
   "tryAgainLater": "Veuillez réessayer plus tard",
-  "goBack": "Retour"
+  "goBack": "Retour",
+  "noReviews": "Aucun avis"
 }
