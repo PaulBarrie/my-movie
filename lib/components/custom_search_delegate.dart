@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/components/movie_item_list_component.dart';
 import 'package:my_movie/components/search_result_tile.dart';
@@ -68,6 +69,14 @@ class CustomSearchDelegate extends SearchDelegate {
         future: _webService.search(query),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(
+                  AppLocalizations.of(context)!.noResults,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              );
+            }
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
