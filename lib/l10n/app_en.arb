@@ -13,5 +13,8 @@
   "favourites": "Favourites",
   "noFavourites": "No favourites",
   "seeAll": "See all",
-  "reviews": "Reviews"
+  "reviews": "Reviews",
+  "anErrorOccurred": "Oops, An error occurred !",
+  "tryAgainLater": "Try again later",
+  "goBack": "Go back"
 }

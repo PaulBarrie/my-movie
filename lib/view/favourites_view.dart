@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/components/an_error_occurred.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/movie_item_list_component.dart';
 import 'package:my_movie/domain/movie_preview.dart';
@@ -52,7 +53,7 @@ class _FavouritesViewState extends State<FavouritesView> {
               );
             }
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return const AnErrorOccurred();
           }
           return const Center(
             child: CustomProgressIndicator(),

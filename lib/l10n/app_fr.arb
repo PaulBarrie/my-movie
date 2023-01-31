@@ -13,5 +13,8 @@
   "favourites": "Favoris",
   "noFavourites": "Aucun favori",
   "seeAll": "Voir tout",
-  "reviews": "Avis"
+  "reviews": "Avis",
+  "anErrorOccurred": "Une erreur est survenue",
+  "tryAgainLater": "Veuillez réessayer plus tard",
+  "goBack": "Retour"
 }

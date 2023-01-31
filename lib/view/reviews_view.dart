@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/components/an_error_occurred.dart';
 import 'package:my_movie/components/custom_progress_indicator.dart';
 import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/components/grade_star.dart';
@@ -151,8 +152,7 @@ class _ReviewsViewState extends State<ReviewsView> {
               },
             );
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}",
-                style: const TextStyle(color: Colors.black));
+            return const AnErrorOccurred();
           }
           return const Center(
             child: CustomProgressIndicator(),

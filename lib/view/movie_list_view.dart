@@ -9,6 +9,7 @@ import 'package:my_movie/domain/news.dart';
 import 'package:my_movie/service/api_web_service.dart';
 import 'package:my_movie/service/web_service.dart';
 
+import '../components/an_error_occurred.dart';
 import '../components/movie_item_list_component.dart';
 import '../components/trends_filter.dart';
 
@@ -155,9 +156,7 @@ class _MovieListViewState extends State<MovieListView> {
                 ),
               );
             } else if (snapshot.hasError) {
-              return SliverToBoxAdapter(
-                child: Text("${snapshot.error}"),
-              );
+              return const AnErrorOccurred();
             }
             return const SliverToBoxAdapter(
               child: Center(
