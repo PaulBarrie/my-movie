@@ -39,19 +39,18 @@ class _FavouritesViewState extends State<FavouritesView> {
               return Center(
                 child: Text(
                   AppLocalizations.of(context)!.noFavourites,
-                  style: Theme.of(context).textTheme.displaySmall,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return MovieItemListComponent(
-                    moviePreview: snapshot.data![index],
-                  );
-                },
-              );
             }
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return MovieItemListComponent(
+                  moviePreview: snapshot.data![index],
+                );
+              },
+            );
           } else if (snapshot.hasError) {
             return const AnErrorOccurred();
           }
