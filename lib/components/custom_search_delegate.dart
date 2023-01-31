@@ -48,6 +48,8 @@ class CustomSearchDelegate extends SearchDelegate {
               );
             },
           );
+        } else if (snapshot.hasError) {
+          return const EmptyWidget();
         } else {
           return const Center(
             child: CircularProgressIndicator(),

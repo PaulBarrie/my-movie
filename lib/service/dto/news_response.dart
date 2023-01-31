@@ -14,7 +14,14 @@ class NewsResponse {
       page: json['page'],
       totalPages: json['total_pages'],
       results: (json['results'] as List)
-          .map((e) => Movie.fromJson(e as Map<String, dynamic>, baseImageUrl))
+          .map((e) {
+            try {
+              return Movie.fromJson(e as Map<String, dynamic>, baseImageUrl);
+            } catch (_) {
+              return null;
+            }
+          })
+          .whereType<Movie>()
           .toList(),
     );
   }
