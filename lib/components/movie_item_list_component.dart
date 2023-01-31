@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/components/empty_widget.dart';
 import 'package:my_movie/components/grade_star.dart';
 import 'package:my_movie/domain/movie_preview.dart';
 
@@ -36,7 +35,14 @@ class _MovieItemListComponentState extends State<MovieItemListComponent> {
         ),
       );
     } else {
-      return const EmptyWidget();
+      return Container(
+        width: 60,
+        height: 60,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.grey,
+        ),
+      );
     }
   }
 
